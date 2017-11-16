@@ -38,7 +38,7 @@ def matrix_multiplication():
                 g & h
             \\end{array}
         \\right]
-        = 
+        =
         \\left[
             \\begin{array}{cc}
                 ae + bg & af + bh \\\\
@@ -51,15 +51,15 @@ class OpeningQuote(Scene):
     def construct(self):
         words = TextMobject(
             """
-            ``There is hardly any theory which is more elementary 
-            than linear algebra, in spite of the fact that generations 
-            of professors and textbook writers have obscured its 
+            ``There is hardly any theory which is more elementary
+            than linear algebra, in spite of the fact that generations
+            of professors and textbook writers have obscured its
             simplicity by preposterous calculations with matrices.''
-            """, 
+            """,
             organize_left_to_right = False
         )
         words.scale_to_fit_width(2*(SPACE_WIDTH-1))
-        words.to_edge(UP)        
+        words.to_edge(UP)
         for mob in words.submobjects[48:49+13]:
             mob.highlight(GREEN)
         author = TextMobject("-Jean Dieudonn\\'e")
@@ -97,7 +97,7 @@ class UpcomingSeriesOfVidoes(Scene):
             return lambda a : min(max(2*(a-offset), 0), 1)
         self.play(*[
             FadeIn(
-                icon, 
+                icon,
                 run_time = 5,
                 rate_func = rate_func_creator(offset)
             )
@@ -174,7 +174,7 @@ class AboutLinearAlgebra(Scene):
             self.get_eigen_question(),
         ]
         for count, topic in enumerate(topics + questions):
-            bubble.position_mobject_inside(topic)            
+            bubble.position_mobject_inside(topic)
             if count == len(topics):
                 self.play(FadeOut(linalg))
                 self.play(
@@ -207,13 +207,13 @@ class AboutLinearAlgebra(Scene):
                     c & d
                 \\end{array}
             \\right)
-            = 
+            =
             ac - bc
         """)
 
     def get_cross_product(self):
         return TexMobject("""
-            \\vec\\textbf{v} \\times \\textbf{w} = 
+            \\textbf{v} \\times \\textbf{w} =
             \\text{Det}\\left(
                 \\begin{array}{ccc}
                     \\hat{\imath} & \\hat{\jmath} & \\hat{k} \\\\
@@ -224,12 +224,12 @@ class AboutLinearAlgebra(Scene):
         """)
 
     def get_eigenvalue(self):
-        result = TextMobject("\\Text{Det}\\left(A - \\lambda I \\right) = 0")
+        result = TextMobject("$ \\text{Det}\\left( A - \\lambda I \\right) = 0 $")
         result.submobjects[-5].highlight(YELLOW)
         return result
 
     def get_matrix_multiplication_question(self):
-        why = TextMobject("Why?").highlight(BLUE) 
+        why = TextMobject("Why?").highlight(BLUE)
         mult = self.get_matrix_multiplication()
         why.next_to(mult, UP)
         result = VMobject(why, mult)
@@ -287,7 +287,7 @@ class NumericVsGeometric(Scene):
             matrix_to_tex_string(TRANFORMED_VECTOR),
             "&=",
             matrix_to_tex_string([
-                ["1 \\cdot 1 + 0 \\cdot 2"], 
+                ["1 \\cdot 1 + 0 \\cdot 2"],
                 ["1 \\cdot 1 + (-1)\\cdot 2"]
             ]),
             "\\\\ &=",
@@ -315,7 +315,7 @@ class NumericVsGeometric(Scene):
             Transform(self.hline, new_line),
             ApplyMethod(self.numeric.shift, (2*SPACE_HEIGHT+1)*DOWN),
             ApplyMethod(
-                self.matrix_vector_product.shift, 
+                self.matrix_vector_product.shift,
                 (2*SPACE_HEIGHT+1)*DOWN
             ),
             ApplyMethod(self.geometric.to_edge, LEFT)
@@ -333,33 +333,34 @@ class NumericVsGeometric(Scene):
             Randolph(mode = "surprised"),
             Randolph(mode = "pondering")
         ]
-        bulb = SVGMobject("light_bulb")
-        bulb.scale_to_fit_height(1)
-        bulb.highlight(YELLOW)
-        thoughts = [
-            matrix_to_mobject(EXAMPLE_TRANFORM),
-            bulb,
-            TextMobject("So therefore...").scale(0.5)
-        ]
+        # bulb = SVGMobject("light_bulb")
+        #
+        # bulb.scale_to_fit_height(1)
+        # bulb.highlight(YELLOW)
+        # thoughts = [
+        #     matrix_to_mobject(EXAMPLE_TRANFORM),
+        #     bulb,
+        #     TextMobject("So therefore...").scale(0.5)
+        # ]
 
-        self.play(Write(follow_words, run_time = 1.5))
-        curr_randy = None
-        for randy, thought in zip(randys, thoughts):
-            randy.shift(DOWN)
-            thought.next_to(randy, UP+RIGHT, buff = 0)
-            if curr_randy:
-                self.play(
-                    Transform(curr_randy, randy),
-                    Transform(curr_thought, thought)
-                )
-            else:
-                self.play(
-                    FadeIn(randy),
-                    Write(thought, run_time = 1)
-                )
-                curr_randy = randy
-                curr_thought = thought
-            self.dither(1.5)
+        # self.play(Write(follow_words, run_time = 1.5))
+        # curr_randy = None
+        # for randy, thought in zip(randys, thoughts):
+        #     randy.shift(DOWN)
+        #     thought.next_to(randy, UP+RIGHT, buff = 0)
+        #     if curr_randy:
+        #         self.play(
+        #             Transform(curr_randy, randy),
+        #             Transform(curr_thought, thought)
+        #         )
+        #     else:
+        #         self.play(
+        #             FadeIn(randy),
+        #             Write(thought, run_time = 1)
+        #         )
+        #         curr_randy = randy
+        #         curr_thought = thought
+        #     self.dither(1.5)
 
 
 class ExampleTransformation(LinearTransformationScene):
@@ -430,10 +431,10 @@ class LinAlgPyramid(Scene):
         subjects = [
             TextMobject(word).to_corner(UP+RIGHT)
             for word in [
-                "computer science", 
-                "engineering", 
-                "statistics", 
-                "economics", 
+                "computer science",
+                "engineering",
+                "statistics",
+                "economics",
                 "pure math",
             ]
         ]
@@ -503,12 +504,12 @@ class ThoughtBubbleTransformation(LinearTransformationScene):
         self.setup()
         rotation = rotation_about_z(np.pi/3)
         self.apply_matrix(
-            np.linalg.inv(rotation), 
+            np.linalg.inv(rotation),
             path_arc = -np.pi/3,
         )
         self.apply_matrix(EXAMPLE_TRANFORM)
         self.apply_matrix(
-            rotation, 
+            rotation,
             path_arc = np.pi/3,
         )
         self.dither()
@@ -549,7 +550,7 @@ class SineApproximations(Scene):
         #Default to 3 terms
         approximation = val - (val**3)/6. + (val**5)/120.
         return TexMobject("""
-            \\sin(%s) \\approx 
+            \\sin(%s) \\approx
             %s - \\dfrac{(%s)^3}{3!} + \\dfrac{(%s)^5}{5!} \\approx
             %.04f
         """%(val_str, val_str, val_str, val_str, approximation))
@@ -559,7 +560,7 @@ class LooseConnectionToTriangles(Scene):
     def construct(self):
         sine = TexMobject("\\sin(x)")
         triangle = Polygon(ORIGIN, 2*RIGHT, 2*RIGHT+UP)
-        arrow = DoubleArrow(LEFT, RIGHT)        
+        arrow = DoubleArrow(LEFT, RIGHT)
         sine.next_to(arrow, LEFT)
         triangle.next_to(arrow, RIGHT)
 
@@ -579,7 +580,7 @@ class PhysicsExample(Scene):
         title.to_corner(UP+LEFT)
         parabola = FunctionGraph(
             lambda x : (3-x)*(3+x)/4,
-            x_min = -4, 
+            x_min = -4,
             x_max = 4
         )
 
@@ -617,7 +618,7 @@ class PhysicsExample(Scene):
         vy.shift(vx.get_end())
 
         arc = Arc(
-            angle_of_vector(vector), 
+            angle_of_vector(vector),
             radius = vector_length / 4.
         )
         arc.shift(p1)
@@ -675,7 +676,7 @@ class LinearAlgebraIntuitions(Scene):
         h_line.highlight(BLUE_E)
         intuitions = [
             "Matrices transform space",
-            "Matrix multiplication corresponds to applying " + 
+            "Matrix multiplication corresponds to applying " +
             "one transformation after another",
             "The determinant gives the factor by which areas change",
         ]
@@ -735,7 +736,7 @@ class MatrixMultiplicationIs(Scene):
         apply_second = TextMobject("Apply second").next_to(brace2, DOWN)
 
         self.play(
-            Write(matrix1), 
+            Write(matrix1),
             ShowCreation(arrow),
             GrowFromCenter(brace1),
             Write(apply_first),
@@ -1012,11 +1013,3 @@ class NextVideo(Scene):
         self.add(title)
         self.play(ShowCreation(rect))
         self.dither()
-
-
-
-
-
-
-
-

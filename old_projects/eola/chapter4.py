@@ -90,12 +90,12 @@ class DeterminedByTwoBasisVectors(LinearTransformationScene):
         self.setup()
         i_hat = self.add_vector([1, 0], color = X_COLOR)
         self.add_transformable_label(
-            i_hat, "\\hat{\\imath}", "\\hat{\\imath}", 
+            i_hat, "\\hat{\\imath}", "\\hat{\\imath}",
             color = X_COLOR
         )
         j_hat = self.add_vector([0, 1], color = Y_COLOR)
         self.add_transformable_label(
-            j_hat, "\\hat{\\jmath}", "\\hat{\\jmath}", 
+            j_hat, "\\hat{\\jmath}", "\\hat{\\jmath}",
             color = Y_COLOR
         )
 
@@ -126,7 +126,7 @@ class FollowLinearCombination(LinearTransformationScene):
             direction = "right", color = Y_COLOR
         )
         vect = self.add_vector(vect_coords)
-        vect_array = Matrix(["x", "y"], add_background_rectangles = True)
+        vect_array = Matrix(["x", "y"])
         v_equals = TexMobject(["\\vec{\\textbf{v}}", "="])
         v_equals.split()[0].highlight(YELLOW)
         v_equals.next_to(vect_array, LEFT)
@@ -264,7 +264,7 @@ class RotationThenShear(LinearTransformationScene):
             words.add_background_rectangle()
 
         self.play(Write(rot_words, run_time = 1))
-        self.add_foreground_mobject(rot_words)            
+        self.add_foreground_mobject(rot_words)
         self.apply_transposed_matrix([[0, 1], [-1, 0]])
 
         self.play(Write(shear_words, run_time = 1))
@@ -287,7 +287,7 @@ class IntroduceIdeaOfComposition(RotationThenShear):
             "and a",
             "shear"
         ])
-        words.split()[0].submobject_gradient_highlight(YELLOW, PINK, use_color_range_to = False)
+        words.split()[0].submobject_gradient_highlight(YELLOW, PINK)
         words.split()[2].highlight(YELLOW)
         words.split()[4].highlight(PINK)
         words.add_background_rectangle()
@@ -297,7 +297,7 @@ class IntroduceIdeaOfComposition(RotationThenShear):
         self.apply_transposed_matrix([[1, 0], [1, 1]], run_time = 2)
         self.play(
             ApplyMethod(self.plane.fade),
-            Write(words),            
+            Write(words),
             Animation(self.i_hat),
             Animation(self.j_hat),
         )
@@ -316,7 +316,7 @@ class IntroduceIdeaOfComposition(RotationThenShear):
         i_hat.highlight(X_COLOR)
         j_hat.highlight(Y_COLOR)
         words.add_background_rectangle()
-        words.next_to(last_words, DOWN) 
+        words.next_to(last_words, DOWN)
 
         i_coords = vector_coordinate_label(self.i_hat)
         j_coords = vector_coordinate_label(self.j_hat)
@@ -365,7 +365,7 @@ class IntroduceIdeaOfComposition(RotationThenShear):
         new_matrix = matrix.copy()
         new_matrix.center().to_edge(UP)
         self.play(Transform(matrix, new_matrix))
-        self.dither()        
+        self.dither()
         self.remove(matrix)
 
         self.setup()
@@ -421,7 +421,7 @@ class ExplainWhyItsMatrixMultiplication(Scene):
         short_way.next_to(equals, RIGHT)
 
         pairs = [
-            (rot_matrix, "Rotation"), 
+            (rot_matrix, "Rotation"),
             (shear_matrix, "Shear"),
             (comp_matrix, "Composition"),
         ]
@@ -435,7 +435,7 @@ class ExplainWhyItsMatrixMultiplication(Scene):
 
         self.add(vect)
         groups = [
-            [rot_matrix], 
+            [rot_matrix],
             [l_paren, r_paren, shear_matrix],
             [equals, comp_matrix, vect_copy],
         ]
@@ -475,7 +475,7 @@ class MoreComplicatedExampleVisually(LinearTransformationScene):
         t_matrix1 = np.array(self.t_matrix1)
         t_matrix2 = np.array(self.t_matrix2)
         t_m1_inv = np.linalg.inv(t_matrix1.transpose()).transpose()
-        t_m2_inv = np.linalg.inv(t_matrix2.transpose()).transpose() 
+        t_m2_inv = np.linalg.inv(t_matrix2.transpose()).transpose()
 
         m1_mob, m2_mob, comp_matrix = self.get_matrices()
 
@@ -517,10 +517,11 @@ class MoreComplicatedExampleVisually(LinearTransformationScene):
         self.remove(self.i_hat, self.j_hat)
         self.dither()
 
-    def get_matrices(self):       
+    def get_matrices(self):
         m1_mob = Matrix(np.array(self.t_matrix1).transpose())
         m2_mob = Matrix(np.array(self.t_matrix2).transpose())
-        comp_matrix = Matrix([["?", "?"], ["?", "?"]])        
+        comp_matrix = Matrix([["?", "?"], ["?", "?."]])
+        #comp_matrix = Matrix([["b", "e"], ["a", "b"]])
         m1_mob.highlight(YELLOW)
         m2_mob.highlight(PINK)
         comp_matrix.get_entries().submobject_gradient_highlight(YELLOW, PINK)
@@ -576,7 +577,7 @@ class MoreComplicatedExampleNumerically(MoreComplicatedExampleVisually):
             self.add(col)
             start_state = self.get_mobjects()
             question = TextMobject(
-                "Where does $\\hat{\\%smath}$ go?"%char 
+                "Where does $\\hat{\\%smath}$ go?"%char
             )
             question.split()[-4].highlight(color)
             question.split()[-5].highlight(color)
@@ -595,7 +596,9 @@ class MoreComplicatedExampleNumerically(MoreComplicatedExampleVisually):
             m2_copy = m2_mob.copy()
             m2_target = m2_mob.copy()
             m2_target.next_to(m2_mob, DOWN, buff = 1)
-            col_vect = Matrix(col.copy().split())
+            newV = col.copy().split()
+            arr = [e.get_tex_string() for e in newV]
+            col_vect = Matrix(arr)
             col_vect.highlight(color)
             col_vect.next_to(m2_target, RIGHT, buff = 0.1)
             second_arrow = Arrow(second, col_vect, color = color)
@@ -613,7 +616,8 @@ class MoreComplicatedExampleNumerically(MoreComplicatedExampleVisually):
             intermediate.arrange_submobjects(buff = 0.1)
             intermediate.next_to(col_vect, RIGHT)
 
-            product = Matrix(result[:,i])
+            #product = Matrix(result[:,i
+            product = result
             product.next_to(intermediate, RIGHT)
 
             comp_col = VMobject(*comp_matrix.split()[1].get_mob_matrix()[:,i])
@@ -659,19 +663,25 @@ class MoreComplicatedExampleNumerically(MoreComplicatedExampleVisually):
 
 class GeneralMultiplication(MoreComplicatedExampleNumerically):
     def get_result(self):
-        entries = map(TexMobject, [
-            "ae+bg", "af+bh", "ce+dg", "cf+dh"
-        ])
-        for mob in entries:
-            mob.split()[0].highlight(PINK)
-            mob.split()[3].highlight(PINK)
-        for mob in entries[0], entries[2]:
-            mob.split()[1].highlight(X_COLOR)
-            mob.split()[4].highlight(X_COLOR)
-        for mob in entries[1], entries[3]:
-            mob.split()[1].highlight(Y_COLOR)
-            mob.split()[4].highlight(Y_COLOR)
-        return np.array(entries).reshape((2, 2))
+        # entries = map(TexMobject, [
+        #     "ae+bg", "af+bh", "ce+dg", "cf+dh"
+        # ])
+        # for mob in entries:
+        #     mob.split()[0].highlight(PINK)
+        #     mob.split()[3].highlight(PINK)
+        # for mob in entries[0], entries[2]:
+        #     mob.split()[1].highlight(X_COLOR)
+        #     mob.split()[4].highlight(X_COLOR)
+        # for mob in entries[1], entries[3]:
+        #     mob.split()[1].highlight(Y_COLOR)
+        #     mob.split()[4].highlight(Y_COLOR)
+        # print entries
+        # print np.asarray(entries)
+        # return np.array(entries).reshape((2, 2))
+        #m =  Matrix([["ae+bg", "af+bh"], ["ce+dg", "cf+dh"]])
+        m = Matrix([["1", "2"], ["3", "4"]])
+        print m
+        return m
 
     def get_matrices(self):
         m1, m2, comp = MoreComplicatedExampleNumerically.get_matrices(self)
@@ -690,7 +700,7 @@ class GeneralMultiplication(MoreComplicatedExampleNumerically):
         words = TextMobject("This method works generally")
         self.play(Write(words, run_time = 2))
         self.play(Transform(
-            m1_entries, m1_entries_target, 
+            m1_entries, m1_entries_target,
             submobject_mode = "lagged_start"
         ))
         self.play(Transform(
@@ -768,7 +778,7 @@ class AskAboutCommutativity(Scene):
         q_marks.next_to(eq, UP)
         neq = TexMobject("\\neq")
         neq.move_to(eq)
-        
+
         self.play(*map(Write, [l_m1, l_m2, eq]))
         self.play(
             Transform(l_m1.copy(), r_m1),
@@ -813,10 +823,10 @@ class ShowRotation(ShowShear):
 class FirstShearThenRotation(LinearTransformationScene):
     CONFIG = {
         "title" : "First shear then rotation",
-        "t_matrix1" : [[1, 0], [1, 1]],        
+        "t_matrix1" : [[1, 0], [1, 1]],
         "t_matrix2" : [[0, 1], [-1, 0]],
         "foreground_plane_kwargs" : {
-            "x_radius" : 2*SPACE_WIDTH, 
+            "x_radius" : 2*SPACE_WIDTH,
             "y_radius" : 2*SPACE_WIDTH,
             "secondary_line_ratio" : 0
         },
@@ -853,14 +863,14 @@ class NoticeTheLackOfComputations(TeacherStudentsScene):
     def construct(self):
         self.setup()
         self.teacher_says("""
-            Notice the lack 
+            Notice the lack
             of computations!
         """)
         self.random_blink()
 
         students = self.get_students()
         random.shuffle(students)
-        unit = np.array([-0.5, 0.5])        
+        unit = np.array([-0.5, 0.5])
         self.play(*[
             ApplyMethod(
                 pi.change_mode, "pondering",
@@ -868,7 +878,7 @@ class NoticeTheLackOfComputations(TeacherStudentsScene):
             )
             for i, pi in enumerate(students)
         ])
-        self.random_blink()
+        #self.random_blink()
         self.dither()
 
 class AskAssociativityQuestion(Scene):
@@ -931,7 +941,7 @@ class AskAssociativityQuestion(Scene):
         self.play(everything.to_edge, UP)
         for letter, matrix in zip([a, b, c], matrices):
             self.play(Transform(
-                letter.copy(), matrix, 
+                letter.copy(), matrix,
                 submobject_mode = "lagged_start"
             ))
             self.remove(*self.get_mobjects_from_last_animation())
@@ -946,7 +956,7 @@ class AskAssociativityQuestion(Scene):
         lp, rp = parens.split()
         state1 = VMobject(
             VectorizedPoint(m1.get_left()),
-            m1, m2, 
+            m1, m2,
             VectorizedPoint(m2.get_right()),
             m3
         )
@@ -1023,7 +1033,7 @@ class ThreeSuccessiveTransformationsAltParens(ThreeSuccessiveTransformations):
 class ThreeSuccessiveTransformationsSimple(ThreeSuccessiveTransformations):
     CONFIG = {
         "symbols_str" : "ABC"
-    }    
+    }
 
 class ExplanationTrumpsProof(Scene):
     def construct(self):
@@ -1062,7 +1072,7 @@ class GoPlay(TeacherStudentsScene):
         student = self.get_students()[-1]
         bubble = ThoughtBubble(direction = RIGHT, width = 6, height = 5)
         bubble.pin_to(student, allow_flipping = False)
-        bubble.make_green_screen()        
+        bubble.make_green_screen()
         self.play(
             ShowCreation(bubble),
             student.look, UP+LEFT,
@@ -1085,18 +1095,4 @@ class NextVideo(Scene):
 
         self.add(title)
         self.play(ShowCreation(rect))
-        self.dither()  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.dither()

@@ -40,14 +40,14 @@ class ComputerScientist(PiCreature):
     CONFIG = {
         "color" : PURPLE_E,
         "flip_at_start" : True,
-    }    
+    }
 
 class OpeningQuote(Scene):
     def construct(self):
         words = TextMobject(
             "``The introduction of numbers as \\\\ coordinates is an act of violence.''",
         )
-        words.to_edge(UP)    
+        words.to_edge(UP)
         for mob in words.submobjects[27:27+11]:
             mob.highlight(GREEN)
         author = TextMobject("-Hermann Weyl")
@@ -63,7 +63,7 @@ class OpeningQuote(Scene):
 class DifferentConceptions(Scene):
     def construct(self):
         physy = Physicist()
-        mathy = Mathematician(mode = "pondering")        
+        mathy = Mathematician(mode = "pondering")
         compy = ComputerScientist()
         creatures = [physy, compy, mathy]
         physy.title = TextMobject("Physics student").to_corner(DOWN+LEFT)
@@ -97,7 +97,7 @@ class DifferentConceptions(Scene):
         symbol.shift(0.5*(RIGHT+UP))
 
         self.play(ShowCreation(
-            plane, 
+            plane,
             submobject_mode = "lagged_start",
             run_time = 3
         ))
@@ -132,7 +132,7 @@ class DifferentConceptions(Scene):
         length.next_to(brace, DOWN)
         group = VMobject(vector, brace, length)
         group.rotate_in_place(np.pi/6)
-        vector.get_center = lambda : vector.get_start()        
+        vector.get_center = lambda : vector.get_start()
 
         direction = TextMobject("Direction")
         direction.next_to(vector, RIGHT)
@@ -179,7 +179,7 @@ class DifferentConceptions(Scene):
                 in_place = True,
                 run_time = 1
             ))
-        self.play(ApplyMethod(physy.change_mode, "plain")) 
+        self.play(ApplyMethod(physy.change_mode, "plain"))
         self.remove(direction)
         for point in 2*UP, 4*RIGHT, ORIGIN:
             self.play(ApplyMethod(vector.move_to, point))
@@ -188,7 +188,7 @@ class DifferentConceptions(Scene):
             Write(two_dimensional),
             ApplyMethod(physy.change_mode, "pondering"),
             ShowCreation(random_vectors, submobject_mode = "lagged_start"),
-            run_time = 1 
+            run_time = 1
         )
         self.dither(2)
         self.remove(random_vectors, vector)
@@ -224,7 +224,7 @@ class DifferentConceptions(Scene):
 
 
     def house_example(self, starter_mobject, title):
-        house = SVGMobject("house")
+        house = SVGMobject(file_name = "house.svg")
         house.set_stroke(width = 0)
         house.set_fill(BLUE_C, opacity = 1)
         house.scale_to_fit_height(3)
@@ -247,12 +247,12 @@ class DifferentConceptions(Scene):
 
         vector = Matrix([square_footage.copy(), price.copy()])
         vector.next_to(house, RIGHT).shift(0.25*UP)
-        new_square_footage, new_price = vector.get_mob_matrix().flatten()
+        new_square_footage, new_price = vector.get_mob_matrix().flatten()[0:2]
         not_equals = TexMobject("\\ne")
         not_equals.next_to(vector)
         alt_vector = Matrix([
-            TextMobject("300{,}000\\text{ ft}^2").highlight(RED),
-            TextMobject("\\$2{,}600").highlight(GREEN)
+            TextMobject("$ 300{,}000\\text{ ft}^2 $").highlight(RED),
+            TextMobject("$\\$2{,}600$").highlight(GREEN)
         ])
         alt_vector.next_to(not_equals)
 
@@ -295,7 +295,7 @@ class DifferentConceptions(Scene):
         self.dither()
 
         everything = VMobject(
-            house, square_footage, price, brackets, brace, 
+            house, square_footage, price, brackets, brace,
             two_dimensional, title
         )
         self.play(ApplyMethod(everything.shift, 2*SPACE_WIDTH*LEFT))
@@ -306,7 +306,7 @@ class DifferentConceptions(Scene):
         self.fade_all_but(creatures, 2)
         physy, compy, mathy = creatures
 
-        v_color = YELLOW 
+        v_color = YELLOW
         w_color = BLUE
         sum_color = GREEN
 
@@ -365,7 +365,7 @@ class DifferentConceptions(Scene):
 
     def add_scaling(self, arrows, syms, arrays):
         s_arrows = VMobject(
-            TexMobject("2"), Vector([1, 1]).highlight(YELLOW), 
+            TexMobject("2"), Vector([1, 1]).highlight(YELLOW),
             TexMobject("="), Vector([2, 2]).highlight(WHITE)
         )
         s_arrows.arrange_submobjects(RIGHT)
@@ -373,7 +373,7 @@ class DifferentConceptions(Scene):
         s_arrows.next_to(arrows, DOWN)
 
         s_arrays = VMobject(
-            TexMobject("2"), 
+            TexMobject("2"),
             matrix_to_mobject([3, -5]).highlight(YELLOW),
             TextMobject("="),
             matrix_to_mobject(["2(3)", "2(-5)"])
@@ -419,8 +419,8 @@ class HelpsToHaveOneThought(Scene):
         morty = Mortimer()
         morty.to_corner(DOWN+RIGHT)
         morty.look(DOWN+LEFT)
-        new_morty = morty.copy().change_mode("speaking")  
-        new_morty.look(DOWN+LEFT)      
+        new_morty = morty.copy().change_mode("speaking")
+        new_morty.look(DOWN+LEFT)
 
         randys = VMobject(*[
             Randolph(color = color).scale(0.8)
@@ -496,7 +496,7 @@ class HowIWantYouToThinkAboutVectors(Scene):
         self.dither()
         self.play(
             FadeOut(tail_word),
-            ApplyMethod(VMobject(dot, line).scale, 0.01) 
+            ApplyMethod(VMobject(dot, line).scale, 0.01)
         )
         self.remove(tail_word, line, dot)
         self.dither()
@@ -514,7 +514,7 @@ class HowIWantYouToThinkAboutVectors(Scene):
         self.dither(3)
 
         self.play(ShowCreation(
-            other_vectors, 
+            other_vectors,
             submobject_mode = "one_at_a_time",
             run_time = 3
         ))
@@ -547,7 +547,9 @@ class CoordinateSystemWalkthrough(VectorScene):
         self.introduce_coordinate_plane()
         self.show_vector_coordinates()
         self.coords_to_vector([3, -1])
-        self.vector_to_coords([-2, -1.5], integer_labels = False)
+        #self.vector_to_coords([-2, -1.5], integer_labels = False)
+        v = Vector([2, -1])
+        self.vector_to_coords(v)
 
     def introduce_coordinate_plane(self):
         plane = NumberPlane()
@@ -592,7 +594,7 @@ class CoordinateSystemWalkthrough(VectorScene):
         )
         self.play(
             GrowFromCenter(unit_brace),
-            Write(one, run_time = 1)            
+            Write(one, run_time = 1)
         )
         self.dither(2)
         self.remove(unit_brace, one)
@@ -724,7 +726,7 @@ class VectorAddition(VectorScene):
         self.dither(2)
         self.play(
             Transform(v2, new_v2),
-            Transform(v_sum, new_v_sum),            
+            Transform(v_sum, new_v_sum),
             Transform(why, why_not_this)
         )
         self.dither(2)
@@ -813,7 +815,7 @@ class VectorAdditionNumerically(VectorScene):
         self.dither()
         self.play(
             ApplyMethod(coords2.next_to, plus, RIGHT),
-            Write(plus, run_time = 1), 
+            Write(plus, run_time = 1),
             *[
                 ApplyMethod(mob.shift, v1.get_end())
                 for mob in v2, x_line2, y_line2
@@ -897,10 +899,10 @@ class VectorAdditionNumerically(VectorScene):
             var.move_to(starter)
         self.play(
             Transform(
-                VMobject(*starters[:4]), 
+                VMobject(*starters[:4]),
                 VMobject(*variables[:4])
             ),
-            FadeOut(sum_x_start), 
+            FadeOut(sum_x_start),
             FadeOut(sum_y_start)
         )
         sum_x_end, sum_y_end = variables[-2:]
@@ -936,7 +938,8 @@ class ShowScalarMultiplication(VectorScene):
     def construct(self):
         plane = self.add_plane()
         v = self.add_vector([3, 1])
-        label = self.label_vector(v, "v", add_to_vector = False)
+        #label = self.label_vector(v, "v", add_to_vector = False)
+        label = self.label_vector(v, "v")
 
         self.scale_vector(v, 2, label)
         self.scale_vector(v, 1./3, label, factor_tex = "\\dfrac{1}{3}")
@@ -945,7 +948,7 @@ class ShowScalarMultiplication(VectorScene):
         self.describe_scalars(v, plane)
 
 
-    def scale_vector(self, v, factor, v_label, 
+    def scale_vector(self, v, factor, v_label,
                      v_name = "v", factor_tex = None):
         starting_mobjects = list(self.mobjects)
 
@@ -956,9 +959,12 @@ class ShowScalarMultiplication(VectorScene):
         )
         self.remove(scaled_vector)
         label_tex = "%s\\vec{\\textbf{%s}}"%(factor_tex, v_name)
+        # label = self.label_vector(
+        #     scaled_vector, label_tex, animate = False,
+        #     add_to_vector = False
+        # )
         label = self.label_vector(
-            scaled_vector, label_tex, animate = False,
-            add_to_vector = False
+            scaled_vector, label_tex, animate = False
         )
         self.remove(label)
         factor_mob = TexMobject(factor_tex)
@@ -1031,7 +1037,7 @@ class ScalingNumerically(VectorScene):
         two_v = self.add_vector([6, 2], animate = False)
         self.remove(two_v)
         self.play(
-            Transform(v.copy(), two_v), 
+            Transform(v.copy(), two_v),
             Write(two_dot, run_time = 1)
         )
         two_v_coords, two_v_x_line, two_v_y_line = self.vector_to_coords(
@@ -1119,8 +1125,8 @@ class ItDoesntMatterWhich(Scene):
         for pi in physy, compy:
             pi.next_to(pi.title, UP)
             self.add(pi, pi.title)
-        compy_speech = compy.get_bubble(SpeechBubble)
-        physy_speech = physy.get_bubble(SpeechBubble)
+        compy_speech = compy.get_bubble(SpeechBubble())
+        physy_speech = physy.get_bubble(SpeechBubble())
         arrow = Vector([2, 1])
         array = matrix_to_mobject([2, 1])
         goes_to = TexMobject("\\Rightarrow")
@@ -1175,7 +1181,7 @@ class DataAnalyst(Scene):
         plane = NumberPlane()
         ellipse = ParametricFunction(
             lambda x : 2*np.cos(x)*(UP+RIGHT) + np.sin(x)*(UP+LEFT),
-            color = PINK, 
+            color = PINK,
             t_max = 2*np.pi
         )
         ellipse_points = [
@@ -1238,7 +1244,7 @@ class ManipulateSpace(LinearTransformationScene):
         self.plane.prepare_for_nonlinear_transform()
 
         self.play(ShowCreation(
-            self.plane, 
+            self.plane,
             submobject_mode = "one_at_a_time",
             run_time = 2
         ))
@@ -1269,38 +1275,4 @@ class NextVideo(Scene):
 
         self.add(title)
         self.play(ShowCreation(rect))
-        self.dither()    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.dither()

@@ -29,6 +29,8 @@ class Mobject(object):
         self.color = Color(self.color)
         if self.name is None:
             self.name = self.__class__.__name__
+        #print "da tuts was"
+        #print submobjects
         self.init_points()
         self.generate_points()
         self.init_colors()
@@ -102,7 +104,7 @@ class Mobject(object):
     def copy(self):
         #TODO, either justify reason for shallow copy, or
         #remove this redundancy everywhere
-        # return self.deepcopy() 
+        #return self.deepcopy()
         copy_mobject = copy.copy(self)
         copy_mobject.points = np.array(self.points)
         copy_mobject.submobjects = [
@@ -294,7 +296,7 @@ class Mobject(object):
             point = mob.get_edge_center(direction)
         else:
             point = mobject_or_point
-        diff = point - self.get_edge_center(direction) 
+        diff = point - self.get_edge_center(direction)
         self.shift(direction*np.dot(diff, direction))
         return self
 
@@ -402,7 +404,7 @@ class Mobject(object):
     def highlight(self, color = YELLOW_C, family = True):
         """
         Condition is function which takes in one arguments, (x, y, z).
-        Here it just recurses to submobjects, but in subclasses this 
+        Here it just recurses to submobjects, but in subclasses this
         should be further implemented based on the the inner workings
         of color
         """
@@ -628,7 +630,7 @@ class Mobject(object):
         submobs = self.submobjects
         if n_rows is None and n_cols is None:
             n_cols = int(np.sqrt(len(submobs)))
-            
+
         if n_rows is not None:
             v1 = RIGHT
             v2 = DOWN

@@ -31,14 +31,15 @@ def matrix_to_tex_string(matrix):
 def matrix_to_mobject(matrix):
     return TexMobject(matrix_to_tex_string(matrix))
 
-def vector_coordinate_label(vector_mob, integer_labels = True, 
+def vector_coordinate_label(vector_mob, integer_labels = True,
                             n_dim = 2, color = WHITE):
     vect = np.array(vector_mob.get_end())
     if integer_labels:
         vect = np.round(vect).astype(int)
     vect = vect[:n_dim]
     vect = vect.reshape((n_dim, 1))
-    label = Matrix(vect, add_background_rectangles = True)
+    #label = Matrix(vect, add_background_rectangles = True)
+    label = Matrix(vect)
     label.scale(VECTOR_LABEL_SCALE_FACTOR)
 
     shift_dir = np.array(vector_mob.get_end())
@@ -60,7 +61,7 @@ class Matrix(VMobject):
     }
     def __init__(self, matrix, **kwargs):
         """
-        Matrix can either either include numbres, tex_strings, 
+        Matrix can either either include numbres, tex_strings,
         or mobjects
         """
         VMobject.__init__(self, **kwargs)
@@ -80,10 +81,25 @@ class Matrix(VMobject):
                 mob.add_background_rectangle()
 
     def string_matrix_to_mob_matrix(self, matrix):
-        return np.array([
+        arr = np.array([
             map(TexMobject, row)
             for row in matrix
-        ]).reshape(matrix.shape)
+        ])
+        arr2 = arr.flatten()
+        l = len(arr2)
+        d = len(matrix.flatten())
+        arr3 = arr2
+        # if l != d:
+        #     arr3 = arr2[:d]
+        return arr3.reshape(matrix.shape)
+
+
+        # print arr.shape
+        # print arr
+        # return np.array([
+        #     map(TexMobject, row)
+        #     for row in matrix
+        # ]).reshape(matrix.shape)
 
     def organize_mob_matrix(self, matrix):
         for i, row in enumerate(matrix):
@@ -115,7 +131,8 @@ class Matrix(VMobject):
 
     def add_background_to_entries(self):
         for mob in self.get_entries():
-            mob.add_background_rectangle()
+            pass
+            #mob.add_background_rectangle()
         return self
 
     def get_mob_matrix(self):
@@ -238,8 +255,8 @@ class NumericalMatrixMultiplication(Scene):
                     self.play(Transform(circles, new_circles))
                     self.play(
                         Transform(
-                            start_parts, 
-                            result_entry.copy().highlight(YELLOW), 
+                            start_parts,
+                            result_entry.copy().highlight(YELLOW),
                             path_arc = -np.pi/2,
                             submobject_mode = "all_at_once",
                         ),
@@ -256,13 +273,3 @@ class NumericalMatrixMultiplication(Scene):
                     r_matrix[c][b].highlight(WHITE)
         self.play(FadeOut(circles), *lagging_anims)
         self.dither()
-
-
-
-
-
-
-
-
-
-
