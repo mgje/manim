@@ -65,12 +65,20 @@ class Matrix(VMobject):
         or mobjects
         """
         VMobject.__init__(self, **kwargs)
+        # print "START"
+        # print matrix
         matrix = np.array(matrix)
+        # print "AFTER NP"
+        # print matrix
         if matrix.ndim == 1:
             matrix = matrix.reshape((matrix.size, 1))
+        # print "Matrix 00"
+        # print matrix[0][0]
+        # print isinstance(matrix[0][0], Mobject)
         if not isinstance(matrix[0][0], Mobject):
             matrix = matrix.astype("string")
             matrix = self.string_matrix_to_mob_matrix(matrix)
+
         self.organize_mob_matrix(matrix)
         self.add(*matrix.flatten())
         self.add_brackets()
@@ -81,21 +89,28 @@ class Matrix(VMobject):
                 mob.add_background_rectangle()
 
     def string_matrix_to_mob_matrix(self, matrix):
-        arr = np.array([
-            map(TexMobject, row)
-            for row in matrix
-        ])
-        arr2 = arr.flatten()
-        l = len(arr2)
-        d = len(matrix.flatten())
-        arr3 = arr2
-        # if l != d:
-        #     arr3 = arr2[:d]
-        return arr3.reshape(matrix.shape)
+        texOl = [map(TextMobject, row) for row in matrix]
+        arr = np.array(texOl)
+        return arr.reshape(matrix.shape)
 
 
-        # print arr.shape
-        # print arr
+        # print "HASATTR"
+        # #print hasattr(texOl[0][0])
+        # print dir(texOl[0][0])
+        # print len(texOl[0][0])
+        # print texOl
+        # print texOl[0][0].__getitem__(0)
+        # print texOl[0][0].tex_string
+        # print texOl[0][0].submobjects
+
+
+        #print texOl[0][0].__getitem__(1).get_tex_string()
+        #print texOl[0][0].__getitem__(2).get_tex_string()
+
+        #arr = np.array(texOl)
+        #print "what a hack"
+        #print arr
+
         # return np.array([
         #     map(TexMobject, row)
         #     for row in matrix

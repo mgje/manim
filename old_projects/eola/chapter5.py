@@ -63,14 +63,14 @@ class Blob(Circle):
         min3 = border_points[np.argsort(distances)[:3]]
         center_direction = self.get_center() - point
         in_center_direction = map(
-            lambda p : np.dot(p-point, center_direction) > 0, 
+            lambda p : np.dot(p-point, center_direction) > 0,
             min3
         )
         return sum(in_center_direction) <= 2
-            
+
 class RightHand(VMobject):
     def __init__(self, **kwargs):
-        hand = SVGMobject("RightHandOutline")
+        hand = SVGMobject(file_name = "Right_hand_rule_cross_product")
         self.inlines = VMobject(*hand.split()[:-4])
         self.outline = VMobject(*hand.split()[-4:])
         self.outline.set_stroke(color = WHITE, width = 5)
@@ -145,7 +145,7 @@ class AskAboutStretching(LinearTransformationScene):
     def construct(self):
         self.setup()
         words = TextMobject("""
-            Exactly how much are 
+            Exactly how much are
             things being stretched?
         """)
         words.add_background_rectangle()
@@ -188,7 +188,7 @@ class BeautyNowUsesLater(TeacherStudentsScene):
 
 class DiagonalExample(LinearTransformationScene):
     CONFIG = {
-        "show_square" : False, 
+        "show_square" : False,
         "show_coordinates" : True,
         "transposed_matrix" : [[3, 0], [0, 2]]
     }
@@ -233,7 +233,7 @@ class DiagonalExample(LinearTransformationScene):
             background_rect = BackgroundRectangle(equation)
 
             self.play(
-                ShowCreation(background_rect),                
+                ShowCreation(background_rect),
                 Transform(width.copy(), width_target),
                 Transform(height.copy(), height_target),
                 *map(Write, [words, times, eq_det])
@@ -247,14 +247,14 @@ class DiagonalExampleWithSquare(DiagonalExample):
 
 class ShearExample(DiagonalExample):
     CONFIG = {
-        "show_square" : False, 
+        "show_square" : False,
         "show_coordinates" : True,
         "transposed_matrix" : [[1, 0], [1, 1]]
     }
 
 class ShearExampleWithSquare(DiagonalExample):
     CONFIG = {
-        "show_square" : True, 
+        "show_square" : True,
         "show_coordinates" : True,
         "show_coordinates" : False,
         "transposed_matrix" : [[1, 0], [1, 1]]
@@ -272,7 +272,7 @@ class ThisSquareTellsEverything(LinearTransformationScene):
         words.highlight(YELLOW)
         words.add_background_rectangle()
         arrow = Arrow(
-            words.get_bottom(), self.square.get_right(), 
+            words.get_bottom(), self.square.get_right(),
             color = WHITE
         )
 
@@ -290,7 +290,7 @@ class WhatHappensToOneSquareHappensToAll(LinearTransformationScene):
         pairs = [
             (2*RIGHT+UP, 1),
             (3*LEFT, 2),
-            (2*LEFT+DOWN, 0.5),          
+            (2*LEFT+DOWN, 0.5),
             (3.5*RIGHT+2.5*UP, 1.5),
             (RIGHT+2*DOWN, 0.25),
             (3*LEFT+3*DOWN, 1),
@@ -317,14 +317,14 @@ class BreakBlobIntoGridSquares(LinearTransformationScene):
     def construct(self):
         self.setup()
         blob = Blob(
-            height = self.blob_height, 
+            height = self.blob_height,
             random_seed = 5,
             random_nudge_size = 0.2,
         )
         blob.next_to(ORIGIN, UP+RIGHT)
         self.add_transformable_mobject(blob)
         arange = np.arange(
-            0, self.blob_height + self.square_size, 
+            0, self.blob_height + self.square_size,
             self.square_size
         )
         square = Square(side_length = self.square_size)
@@ -352,7 +352,7 @@ class BreakBlobIntoGridSquaresGranular(BreakBlobIntoGridSquares):
 class BreakBlobIntoGridSquaresMoreGranular(BreakBlobIntoGridSquares):
     CONFIG = {
         "square_size" : 0.15
-    }    
+    }
 
 class BreakBlobIntoGridSquaresVeryGranular(BreakBlobIntoGridSquares):
     CONFIG = {
@@ -389,7 +389,7 @@ class NameDeterminant(LinearTransformationScene):
             area_label_target.scale(det)
         area_label_target.arrange_submobjects(RIGHT, buff = 0.1)
         self.add_moving_mobject(area_label, area_label_target)
-        
+
         self.dither()
         self.apply_transposed_matrix(self.t_matrix)
         self.dither()
@@ -468,7 +468,7 @@ class UnderstandingBeforeApplication(TeacherStudentsScene):
     def construct(self):
         self.setup()
         self.teacher_says("""
-            Just the visual 
+            Just the visual
             understanding for now
         """)
         self.random_blink()
@@ -674,8 +674,8 @@ class WhyNegativeScaling(TeacherStudentsScene):
     def construct(self):
         self.setup()
         self.student_says("""
-            Why does negative area 
-            relate to orientation-flipping? 
+            Why does negative area
+            relate to orientation-flipping?
         """)
         other_students = np.array(self.get_students())[[0, 2]]
         self.play(*[
@@ -735,12 +735,12 @@ class WhatAboutThreeDimensions(TeacherStudentsScene):
     def construct(self):
         self.setup()
         self.student_says("""
-            What about 3D 
+            What about 3D
             transformations?
         """)
-        self.random_blink()
+        #self.random_blink()
         self.dither()
-        self.random_blink()
+        #self.random_blink()
 
 class Transforming3DCube(Scene):
     def construct(self):
@@ -759,7 +759,7 @@ class NameParallelepiped(Scene):
 
 class DeterminantIsVolumeOfParallelepiped(Scene):
     def construct(self):
-        matrix = Matrix([[1, 0, 0.5], [0.5, 1, 0], [1, 0, 1]])
+        matrix = Matrix([["1", "0", "0.5"], ["0.5", "1", "0"], ["1", "0"," 1"]])
         matrix.shift(3*LEFT)
         matrix.highlight_columns(X_COLOR, Y_COLOR, Z_COLOR)
         det_text = get_det_text(matrix)
@@ -788,7 +788,7 @@ class Degenerate3DTransformation(Scene):
 
 class WriteZeroDeterminant(Scene):
     def construct(self):
-        matrix = Matrix([[1, 0, 1], [0.5, 1, 1.5], [1, 0, 1]])
+        matrix = Matrix([["1", "0", "1"], ["0.5"," 1", "1.5"], ["1"," 0", "1"]])
         matrix.shift(2*LEFT)
         matrix.highlight_columns(X_COLOR, Y_COLOR, Z_COLOR)
         det_text = get_det_text(matrix, 0)
@@ -819,7 +819,7 @@ class AskAboutNegaive3DDeterminant(TeacherStudentsScene):
         self.random_blink()
         self.play(self.teacher.change_mode, "pondering")
         self.dither()
-        self.random_blink()
+        #self.random_blink()
 
 class OrientationReversing3DTransformation(Scene):
     def construct(self):
@@ -836,7 +836,7 @@ class RightHandRule(Scene):
         v1 = Vector([-1.75, 0.5])
         v2 = Vector([-1.4, -0.7])
         v3 = Vector([0, 1.7])
-        vects = [v1, v2, v3]        
+        vects = [v1, v2, v3]
         if self.flip:
             VMobject(hand, *vects).flip()
 
@@ -975,7 +975,7 @@ class FullFormulaExplanation(LinearTransformationScene):
         self.setup()
         self.add_unit_square()
         self.apply_transposed_matrix([[3, 1], [1, 2]], run_time = 0)
-        self.add_braces()        
+        self.add_braces()
         self.add_polygons()
         self.show_formula()
 
@@ -1011,7 +1011,7 @@ class FullFormulaExplanation(LinearTransformationScene):
             tex_mob.move_to(shape.get_center_of_mass())
             everyone.add(shape, tex_mob)
         self.play(FadeIn(
-            everyone, 
+            everyone,
             submobject_mode = "lagged_start",
             run_time = 1
         ))
@@ -1080,8 +1080,8 @@ class ThreeDDetFormula(Scene):
             m.add(get_det_text(m))
         a, b, c = matrix.get_entries().split()[:3]
         parts = it.starmap(VMobject, [
-            [matrix], 
-            [TexMobject("="), a.copy(), m1], 
+            [matrix],
+            [TexMobject("="), a.copy(), m1],
             [TexMobject("-"), b.copy(), m2],
             [TexMobject("+"), c.copy(), m3],
         ])
@@ -1103,13 +1103,13 @@ class QuizTime(TeacherStudentsScene):
         self.teacher_says("Quiz time!")
         self.random_blink()
         self.dither()
-        self.random_blink()
+        #self.random_blink()
 
 class ProductProperty(Scene):
     def construct(self):
         lhs = TexMobject([
             "\\text{det}(",
-            "M_1", 
+            "M_1",
             "M_2",
             ")"
         ])
@@ -1119,7 +1119,7 @@ class ProductProperty(Scene):
 
         rhs = TexMobject([
             "=\\text{det}(",
-            "M_1", 
+            "M_1",
             ")\\text{det}(",
             "M_2",
             ")"
@@ -1157,16 +1157,4 @@ class NextVideo(Scene):
 
         self.add(title)
         self.play(ShowCreation(rect))
-        self.dither()  
-
-
-
-
-
-
-
-
-
-
-
-
+        self.dither()

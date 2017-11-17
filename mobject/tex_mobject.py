@@ -52,6 +52,8 @@ class TexMobject(SVGMobject):
             self.template_tex_file
         )
         SVGMobject.__init__(self, file_name = file_name, **kwargs)
+        # print "wie lnag"
+        # print len(self)
         self.scale(TEX_MOB_SCALE_FACTOR)
         if self.organize_left_to_right:
             self.organize_submobjects_left_to_right()
@@ -122,6 +124,8 @@ class TexMobject(SVGMobject):
         curr_index = 0
         self.expression_parts = list(self.args)
         for expr in self.args:
+            # print "HALLO"
+            # print expr
             sub_tex_mob = TexMobject(expr, **self.CONFIG)
             sub_tex_mob.tex_string = expr ##Want it unmodified
             num_submobs = len(sub_tex_mob.submobjects)
