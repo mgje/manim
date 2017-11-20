@@ -42,19 +42,29 @@ class TexMobject(SVGMobject):
     def __init__(self, *args, **kwargs):
         digest_config(self, kwargs, locals())
         ##TODO, Eventually remove this
-        if len(args) == 1 and isinstance(args[0], list):
-            self.args = args[0]
+        # if len(args) == 1 and isinstance(args[0], list):
+        #     self.args = args[0]
         ##
         assert(all([isinstance(a, str) for a in self.args]))
         self.tex_string = self.get_modified_expression()
+
         file_name = tex_to_svg_file(
             self.tex_string,
             self.template_tex_file
         )
+        # print "latex STUFFFFFFFF"
+        # print self.tex_string
+        # print self.template_tex_file
         SVGMobject.__init__(self, file_name = file_name, **kwargs)
         # print "wie lnag"
         # print len(self)
         self.scale(TEX_MOB_SCALE_FACTOR)
+
+        #print dir(self)
+        # print self.__class__
+        # print self.points
+        # print self.submobjects
+
         if self.organize_left_to_right:
             self.organize_submobjects_left_to_right()
 

@@ -716,6 +716,7 @@ class Introduce2Dto1DLinearTransformations(TwoDToOneDScene):
         number_line_words.next_to(self.number_line, UP, buff = MED_SMALL_BUFF)
         numbers = VMobject(*self.number_line.get_number_mobjects())
 
+
         self.remove(self.number_line)
         self.apply_transposed_matrix(self.t_matrix)
         self.play(
@@ -732,8 +733,8 @@ class Symbolic2To1DTransform(Scene):
         input_array.highlight(YELLOW)
         in_arrow = Arrow(LEFT, RIGHT, color = input_array.get_color())
         func[1].highlight(input_array.get_color())
-        #output_array = Matrix(["1.8"])
-        output_array = Matrix([1,8])
+        #output_array = Matrix(["1.","34"])
+        output_array = Matrix(["1.8"])
         output_array.highlight(PINK)
         out_arrow = Arrow(LEFT, RIGHT, color = output_array.get_color())
         VMobject(
@@ -1072,7 +1073,7 @@ class AlwaysfollowIHatJHat(TeacherStudentsScene):
 class ShowMatrix(TwoDToOneDScene):
     def construct(self):
         self.apply_transposed_matrix(self.t_matrix)
-        self.play(Write(self.number_line.get_numbers()))
+        self.play(Write(self.number_line.get_number_mobjects()))
         self.show_matrix()
 
     def show_matrix(self):
@@ -1138,11 +1139,14 @@ class FollowVectorViaCoordinates(TwoDToOneDScene):
         self.add_foreground_mobject(v_label, array)
         self.add_vector(v, animate = False)
         self.dither()
-        to_fade = basis_labels
+        to_fade = [basis_labels]
         for i, anim_tuple in enumerate(scaling_anim_tuples):
             self.play(*anim_tuple)
             movers = self.get_mobjects_from_last_animation()
             to_fade += movers[:-1]
+
+
+
             if i == 1:
                 self.play(*[
                     ApplyMethod(m.shift, self.v_coords[0]*RIGHT)
@@ -1157,7 +1161,7 @@ class FollowVectorViaCoordinates(TwoDToOneDScene):
         )
 
         self.apply_transposed_matrix(self.t_matrix)
-        self.play(Write(self.number_line.get_numbers(), run_time = 1))
+        self.play(Write(self.number_line.get_number_mobjects(), run_time = 1))
         self.play(
             self.i_hat.shift, 0.5*UP,
             self.j_hat.shift, DOWN,
@@ -1381,7 +1385,7 @@ class SomeKindOfConnection(Scene):
         number_line.to_edge(RIGHT)
         squish_plane.move_to(number_line)
 
-        numbers = number_line.get_numbers(*range(-6, 8, 2))
+        numbers = number_line.get_number_mobjects(*range(-6, 8, 2))
         v_line = Line(UP, DOWN).scale(SPACE_HEIGHT)
         v_line.highlight(GREY)
         v_line.set_stroke(width = 10)
@@ -1455,7 +1459,7 @@ class ProjectOntoUnitVectorNumberline(VectorScene):
         one.rotate_in_place(-u_hat.get_angle())
 
         number_line = NumberLine(x_min = -9, x_max = 9)
-        numbers = number_line.get_numbers()
+        numbers = number_line.get_number_mobjects()
         VGroup(number_line, numbers).rotate(u_hat.get_angle())
         if self.animate_setup:
             self.play(
@@ -1478,7 +1482,7 @@ class ProjectOntoUnitVectorNumberline(VectorScene):
             number_line.target = number_line.copy()
             number_line.target.rotate(-u_hat.get_angle())
             number_line.target.stretch(self.zoom_factor, 0)
-            numbers.target = number_line.target.get_numbers()
+            numbers.target = number_line.target.get_number_mobjects()
             number_line.target.rotate(u_hat.get_angle())
             numbers.target.rotate(u_hat.get_angle())
             self.play(*[
@@ -2069,7 +2073,7 @@ class TwoDOneDTransformationSeparateSpace(Scene):
         number_line.to_edge(RIGHT)
         squish_plane.move_to(number_line)
 
-        numbers = number_line.get_numbers(*range(-6, 8, 2))
+        numbers = number_line.get_number_mobjects(*range(-6, 8, 2))
         v_line = Line(UP, DOWN).scale(SPACE_HEIGHT)
         v_line.highlight(GREY)
         v_line.set_stroke(width = 10)
@@ -2257,7 +2261,7 @@ class WhatTheVectorWantsToBe(Scene):
         number_line.to_edge(RIGHT)
         squish_plane.move_to(number_line)
 
-        numbers = number_line.get_numbers(*range(-6, 8, 2))
+        numbers = number_line.get_number_mobjects(*range(-6, 8, 2))
         v_line = Line(UP, DOWN).scale(SPACE_HEIGHT)
         v_line.highlight(GREY)
         v_line.set_stroke(width = 10)

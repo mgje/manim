@@ -25,15 +25,21 @@ class Mobject(object):
         digest_config(self, kwargs)
         if not all(map(lambda m : isinstance(m, Mobject), submobjects)):
             raise Exception("All submobjects must be of type Mobject")
+        #print "sub mob obj"
+        #print submobjects
         self.submobjects = list(submobjects)
         self.color = Color(self.color)
         if self.name is None:
             self.name = self.__class__.__name__
         #print "da tuts was"
         #print submobjects
+        #print self.submobjects
+
         self.init_points()
         self.generate_points()
         self.init_colors()
+        #print"later"
+        #print self.submobjects
 
     def __str__(self):
         return str(self.name)

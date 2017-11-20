@@ -20,7 +20,7 @@ class SVGMobject(VMobject):
         "height" : 2,
         "width" : None,
         #Must be filled in in a subclass, or when called
-        "file_name" : None, 
+        "file_name" : None,
         "stroke_width" : 0,
         "fill_opacity" : 1,
         # "fill_color" : LIGHT_GREY,
@@ -48,9 +48,20 @@ class SVGMobject(VMobject):
 
     def generate_points(self):
         doc = minidom.parse(self.file_path)
+        # print dir(doc)
+        #print doc._elem_info
+        #print doc.toxml()
         self.ref_to_element = {}
         for svg in doc.getElementsByTagName("svg"):
             self.add(*self.get_mobjects_from(svg))
+            # print "ELEMENTS SVG : add"
+            # tsl = self.get_mobjects_from(svg)
+            # print tsl[0]
+            # print dir (tsl[0])
+            # print "so what"
+            # print tsl[0].name
+            # print tsl[0].get_original_path_string()
+            # print svg
         doc.unlink()
 
     def get_mobjects_from(self, element):
@@ -133,7 +144,7 @@ class SVGMobject(VMobject):
             fill_color = WHITE,
             fill_opacity = 1.0
         )
-        mob.shift(mob.get_center()-mob.get_corner(UP+LEFT))        
+        mob.shift(mob.get_center()-mob.get_corner(UP+LEFT))
         return mob
 
     def handle_transforms(self, element, mobject):

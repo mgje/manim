@@ -66,11 +66,14 @@ class Matrix(VMobject):
         """
         VMobject.__init__(self, **kwargs)
         # print "START"
-        # print matrix
+        print matrix
         matrix = np.array(matrix)
         # print "AFTER NP"
         # print matrix
         if matrix.ndim == 1:
+            print "1 dim"
+            print matrix
+            print len(matrix)
             matrix = matrix.reshape((matrix.size, 1))
         # print "Matrix 00"
         # print matrix[0][0]
@@ -89,9 +92,49 @@ class Matrix(VMobject):
                 mob.add_background_rectangle()
 
     def string_matrix_to_mob_matrix(self, matrix):
+        # print len(matrix)
+        # print matrix.shape
         texOl = [map(TextMobject, row) for row in matrix]
-        arr = np.array(texOl)
+        # print texOl
+        #print dir(texOl)
+        # print "nummer of things XXXXXXXXXXXXXXXXXXXX"
+        # print "len of tex"
+        # print len(texOl)
+        # print "texOl"
+        # print texOl
+        # print texOl.__sizeof__()
+        # print "print elements"
+
+        # for e in texOl:
+        # #     print e
+        # #     #print dir(e)
+        #     print "XXXXXXXXXXXXXXXXXXXXXX: TEXTSTRING"
+        #     print e[0].get_tex_string()
+        #     print e[0].submobjects
+        #     print len(e)
+        #     print "XXXXXXXXXXXXXXXXXXXXXX: TEXTSTRING"
+        # print "printed items"
+        # print len(texOl)
+
+        # Probleme with the numpy array !! make it explicit
+        n = len(texOl)
+        m = len(texOl[0])
+
+
+        arr = np.empty(n*m,dtype=object)
+
+        for i in range(n):
+            for j in range(m):
+                arr[i*m+j]=texOl[i][j]
+
+        # print arr
+        # print matrix.shape
+        # print texOl
+
+
         return arr.reshape(matrix.shape)
+        #return arr.reshape(1,1)
+
 
 
         # print "HASATTR"
