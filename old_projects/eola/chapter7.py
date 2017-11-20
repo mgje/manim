@@ -1299,8 +1299,8 @@ class TwoDOneDMatrixMultiplication(Scene):
 class AssociationBetweenMatricesAndVectors(Scene):
     CONFIG = {
         "matrices" : [
-            [[2, 7]],
-            [[1, -2]]
+            [["2", "7"]],
+            [["1", "-2"]]
         ]
     }
     def construct(self):
@@ -1313,6 +1313,8 @@ class AssociationBetweenMatricesAndVectors(Scene):
             matrices_words, arrow, vectors_words
         ).arrange_submobjects(buff = MED_SMALL_BUFF)
 
+        #matrices  = Matrix(self.matrices)
+        #vectors = Matrix([m[0] for m in self.matrices])
         matrices = VGroup(*map(Matrix, self.matrices))
         vectors = VGroup(*map(Matrix, [m[0] for m in self.matrices]))
         for m in list(matrices) + list(vectors):
@@ -1424,7 +1426,7 @@ class AnExampleWillClarify(TeacherStudentsScene):
     def construct(self):
         self.teacher_says("An example will clarify...")
         self.change_student_modes(*["happy"]*3)
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class ImagineYouDontKnowThis(Scene):
     def construct(self):
@@ -1831,7 +1833,7 @@ class ShowSingleProjection(ProjectBasisVectors):
 
 class GeneralTwoDOneDMatrixMultiplication(TwoDOneDMatrixMultiplication):
     CONFIG = {
-        "matrix" : [["u_x", "u_y"]],
+        "matrix" : [["$u_x$", "$u_y$"]],
         "vector" : ["x", "y"],
         "order_left_to_right" : True,
     }
@@ -1920,11 +1922,11 @@ class ScaleUpUHat(ProjectOntoUnitVectorNumberline) :
         self.transform_some_vector()
 
     def scale_u_hat(self):
-        self.u_hat.coords = Matrix(["u_x", "u_y"])
+        self.u_hat.coords = Matrix([["$u_x$"], ["$u_y$"]])
         new_u = self.u_hat.copy().scale(self.scalar)
         new_u.coords = Matrix([
-            "%du_x"%self.scalar,
-            "%du_y"%self.scalar,
+            ["$%du_x$"%self.scalar],
+            ["$%du_y$"%self.scalar]
         ])
         for v in self.u_hat, new_u:
             v.coords.get_entries().highlight(YELLOW)
@@ -1939,7 +1941,13 @@ class ScaleUpUHat(ProjectOntoUnitVectorNumberline) :
         self.dither()
 
     def show_matrix(self):
-        matrix = Matrix([list(self.u_hat.coords.get_entries().copy())])
+
+        l = list(self.u_hat.coords.get_entries().copy())
+        print l
+        print "XXXXXXXXXXXXXXXXXXXXXX"
+        print [e.get_tex_string() for e in l]
+        matrix = Matrix([["$u_x$","$u_y$"]])
+        #matrix = Matrix([e.get_tex_string() for e in l])
         matrix.highlight_columns(X_COLOR, Y_COLOR)
         matrix.add_to_back(BackgroundRectangle(matrix))
         brace = Brace(matrix)
@@ -1971,10 +1979,14 @@ class ScaleUpUHat(ProjectOntoUnitVectorNumberline) :
                 b.get_end(), b.proj.get_end(),
                 dashed_segment_length = 0.05
             )
-            b.proj.label = TexMobject("u_%s"%char)
+            su = "u_%s"%char
+            print su
+            b.proj.label = TexMobject(su)
             b.proj.label.highlight(b.get_color())
             b.scaled_proj = b.proj.copy().scale(self.scalar)
-            b.scaled_proj.label = TexMobject("3u_%s"%char)
+            u = "3u_%s"%char
+            print u
+            b.scaled_proj.label = TexMobject(u)
             b.scaled_proj.label.highlight(b.get_color())
             for v, direction in zip([b.proj, b.scaled_proj], [UP, UP+LEFT]):
                 v.label.add_background_rectangle()
@@ -2041,13 +2053,14 @@ class NoticeWhatHappenedHere(TeacherStudentsScene):
 class AbstractNumericAssociation(AssociationBetweenMatricesAndVectors):
     CONFIG = {
         "matrices" : [
-            [["u_x", "u_y"]]
+        [["x", "y"]]
         ]
     }
 
+
 class TwoDOneDTransformationSeparateSpace(Scene):
     CONFIG = {
-        "v_coords" : [4, 1]
+        "v_coords" : [[4, 1]]
     }
     def construct(self):
         width = SPACE_WIDTH-1
@@ -2055,7 +2068,7 @@ class TwoDOneDTransformationSeparateSpace(Scene):
         squish_plane = plane.copy()
         i_hat = Vector([1, 0], color = X_COLOR)
         j_hat = Vector([0, 1], color = Y_COLOR)
-        vect = Vector(self.v_coords, color = YELLOW)
+        vect = Vector(self.v_coords[0], color = YELLOW)
         plane.add(vect, i_hat, j_hat)
         plane.scale_to_fit_width(SPACE_WIDTH)
         plane.to_edge(LEFT, buff = 0)
@@ -2064,8 +2077,8 @@ class TwoDOneDTransformationSeparateSpace(Scene):
         squish_plane.apply_function(
             lambda p : np.dot(p, [4, 1, 0])*RIGHT
         )
-        squish_plane.add(Vector(self.v_coords[0]*RIGHT, color = X_COLOR))
-        squish_plane.add(Vector(self.v_coords[1]*RIGHT, color = Y_COLOR))
+        squish_plane.add(Vector(self.v_coords[0][0]*RIGHT, color = X_COLOR))
+        squish_plane.add(Vector(self.v_coords[0][1]*RIGHT, color = Y_COLOR))
         squish_plane.scale(width/(2*SPACE_WIDTH))
         plane.add(i_hat, j_hat)
 
@@ -2078,7 +2091,7 @@ class TwoDOneDTransformationSeparateSpace(Scene):
         v_line.highlight(GREY)
         v_line.set_stroke(width = 10)
 
-        matrix = Matrix([self.v_coords])
+        matrix = Matrix([self.v_coords[0]])
         matrix.highlight_columns(X_COLOR, Y_COLOR)
         matrix.next_to(number_line, UP, buff = LARGE_BUFF)
         v_coords = Matrix(self.v_coords)
@@ -2184,14 +2197,14 @@ class TranslateToTheWorldOfTransformations(TwoDOneDMatrixMultiplication):
     }
     def construct(self):
         v1, v2 = [
-            Matrix(["x_%d"%n, "y_%d"%n])
+            Matrix([["$x_%d$"%n], ["$y_%d$"%n]])
             for n in 1, 2
         ]
         v1.highlight_columns(V_COLOR)
         v2.highlight_columns(W_COLOR)
         dot = TexMobject("\\cdot")
 
-        matrix = Matrix([["x_1", "y_1"]])
+        matrix = Matrix([["$x_1$", "$y_1$"]])
         matrix.highlight_columns(X_COLOR, Y_COLOR)
 
         dot_product = VGroup(v1, dot, v2)

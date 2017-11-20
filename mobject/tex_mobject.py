@@ -42,8 +42,8 @@ class TexMobject(SVGMobject):
     def __init__(self, *args, **kwargs):
         digest_config(self, kwargs, locals())
         ##TODO, Eventually remove this
-        # if len(args) == 1 and isinstance(args[0], list):
-        #     self.args = args[0]
+        if len(args) == 1 and isinstance(args[0], list):
+            self.args = args[0]
         ##
         assert(all([isinstance(a, str) for a in self.args]))
         self.tex_string = self.get_modified_expression()

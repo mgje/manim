@@ -66,21 +66,29 @@ class Matrix(VMobject):
         """
         VMobject.__init__(self, **kwargs)
         # print "START"
+        # print matrix
         print matrix
         matrix = np.array(matrix)
         # print "AFTER NP"
-        # print matrix
-        if matrix.ndim == 1:
-            print "1 dim"
-            print matrix
-            print len(matrix)
-            matrix = matrix.reshape((matrix.size, 1))
+
+
+        # if matrix.ndim == 1:
+        #     print "1 dim"
+        #     print matrix
+        #     print len(matrix)
+        #     matrix = matrix.reshape((matrix.size, 1))
         # print "Matrix 00"
-        # print matrix[0][0]
+        #print matrix[0][0]
         # print isinstance(matrix[0][0], Mobject)
-        if not isinstance(matrix[0][0], Mobject):
-            matrix = matrix.astype("string")
-            matrix = self.string_matrix_to_mob_matrix(matrix)
+
+        try:
+            if not isinstance(matrix[0][0], Mobject):
+                matrix = matrix.astype("string")
+                matrix = self.string_matrix_to_mob_matrix(matrix)
+        except IndexError:
+            if not isinstance(matrix[0], Mobject):
+                matrix = matrix.astype("string")
+                matrix = self.string_matrix_to_mob_matrix(matrix)
 
         self.organize_mob_matrix(matrix)
         self.add(*matrix.flatten())
@@ -93,9 +101,11 @@ class Matrix(VMobject):
 
     def string_matrix_to_mob_matrix(self, matrix):
         # print len(matrix)
-        # print matrix.shape
+        print matrix.shape
         texOl = [map(TextMobject, row) for row in matrix]
-        # print texOl
+        print texOl
+        print "input matrix"
+        print matrix
         #print dir(texOl)
         # print "nummer of things XXXXXXXXXXXXXXXXXXXX"
         # print "len of tex"
@@ -119,6 +129,8 @@ class Matrix(VMobject):
         # Probleme with the numpy array !! make it explicit
         n = len(texOl)
         m = len(texOl[0])
+        print n
+        print m
 
 
         arr = np.empty(n*m,dtype=object)
@@ -127,8 +139,8 @@ class Matrix(VMobject):
             for j in range(m):
                 arr[i*m+j]=texOl[i][j]
 
-        # print arr
-        # print matrix.shape
+        print arr
+        print matrix.shape
         # print texOl
 
 
