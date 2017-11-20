@@ -84,7 +84,7 @@ class NoComputations(TeacherStudentsScene):
                 ["dejected", "confused", "angry"]
             )
         ])
-        self.random_blink()
+        #self.random_blink()
         self.dither()
         new_words = self.teacher.bubble.position_mobject_inside(
             TextMobject([
@@ -1022,10 +1022,8 @@ class PlayInReverseWithSolution(PlayInReverse):
 class OneUniqueSolution(Scene):
     def construct(self):
         system = TexMobject("""
-            \\begin{align*}
                 ax + cy &= e \\\\
                 bx + dy &= f
-            \\end{align*}
         """)
         VMobject(*np.array(system.split())[[1, 8]]).highlight(X_COLOR)
         VMobject(*np.array(system.split())[[4, 11]]).highlight(Y_COLOR)
@@ -1162,7 +1160,7 @@ class SolutionsCanStillExist(TeacherStudentsScene):
         )
         words[1].highlight(TEAL)
         self.teacher_says(words)
-        self.random_blink(2)
+        #self.random_blink(2)
 
 class ShowVInAndOutOfColumnSpace(LinearSystemTransformationScene):
     CONFIG = {
@@ -1194,7 +1192,7 @@ class NotAllSquishesAreCreatedEqual(TeacherStudentsScene):
             Some squishes feel
             ...squishier
         """)
-        self.random_blink(2)
+        #self.random_blink(2)
 
 class PrepareForRank(Scene):
     def construct(self):
@@ -1605,7 +1603,7 @@ class NameFullRank(Scene):
 
 class OriginIsAlwaysInColumnSpace(LinearTransformationScene):
     def construct(self):
-        vector = Matrix([0, 0]).highlight(YELLOW)
+        vector = Matrix([0, "0."]).highlight(YELLOW)
         words = TextMobject("is always in the", "column space")
         words[1].highlight(TEAL)
         words.next_to(vector, RIGHT)
@@ -1638,7 +1636,7 @@ class FullRankCase(LinearTransformationScene):
             [[2, 1], [-3, 2]],
             [[1./2, 1], [1./3, -1./2]]
         ]
-        vector = Matrix([0, 0]).highlight(YELLOW)
+        vector = Matrix(["0", "0."]).highlight(YELLOW)
         title = VMobject(
             TextMobject("Only"), vector,
             TextMobject("lands on"), vector.copy()
@@ -1738,7 +1736,7 @@ class NullSpaceSolveForVEqualsZero(NameNullSpace):
         A, x, eq, v = equation
         x.highlight(PINK)
         v.highlight(YELLOW)
-        zero_vector = Matrix([0, 0])
+        zero_vector = Matrix(["0", "0."])
         zero_vector.highlight(YELLOW)
         zero_vector.scale(0.7)
         zero_vector.move_to(v, aligned_edge = LEFT)
@@ -1992,7 +1990,7 @@ class MuchLeftToLearn(TeacherStudentsScene):
             "That's the high \\\\",
             "level overview"
         )
-        self.random_blink()
+        #self.random_blink()
         self.dither()
         self.teacher_says(
             "There is still \\\\",
@@ -2003,7 +2001,7 @@ class MuchLeftToLearn(TeacherStudentsScene):
                 "raise_right_hand", "raise_left_hand"
             ])
             self.play(pi.change_mode, target_mode)
-        self.random_blink()
+        #self.random_blink()
         self.dither()
 
 class NotToLearnItAllNow(TeacherStudentsScene):

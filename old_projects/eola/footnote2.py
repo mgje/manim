@@ -20,14 +20,14 @@ from mobject.vectorized_mobject import *
 from topics.matrix import *
 from topics.vector_space_scene import *
 
-from ka_playgrounds.circuits import Resistor, Source, LongResistor
+#from ka_playgrounds.circuits import Resistor, Source, LongResistor
 
 class OpeningQuote(Scene):
     def construct(self):
         words = TextMobject(
             "``On this quiz, I asked you to find the determinant of a",
             "2x3 matrix.",
-            "Some of you, to my great amusement, actually tried to do this.''" 
+            "Some of you, to my great amusement, actually tried to do this.''"
         )
         words.scale_to_fit_width(2*SPACE_WIDTH - 2)
         words.to_edge(UP)
@@ -202,7 +202,7 @@ class DescribeColumnsInSpecificTransformation(Scene):
         self.dither()
         for col in i_col, j_col:
             self.play(
-                Write(col),            
+                Write(col),
                 ShowCreation(col.arrow),
                 Write(col.words, run_time = 1)
             )
@@ -509,7 +509,7 @@ class TwoDTo1DTransformWithDots(TwoDTo1DTransform):
         func = self.get_matrix_transformation(self.t_matrix)
         new_dots = VMobject(*[
             Dot(
-                func(dot.get_center()), 
+                func(dot.get_center()),
                 color = dot.get_color(),
                 radius = dot.radius
             )
@@ -541,7 +541,7 @@ class NextVideo(Scene):
 
         self.add(title)
         self.play(ShowCreation(rect))
-        self.dither()     
+        self.dither()
 
 class DotProductPreview(VectorScene):
     CONFIG = {
@@ -582,7 +582,7 @@ class DotProductPreview(VectorScene):
         line.rotate(self.v.get_angle())
         self.play(Write(line), Animation(self.v))
         self.play(
-            line.highlight, self.v.get_color(), 
+            line.highlight, self.v.get_color(),
             Animation(self.v),
             rate_func = there_and_back
         )
@@ -612,7 +612,7 @@ class DotProductPreview(VectorScene):
         dot_product = np.dot(self.v.get_end(), self.w.get_end())
         start_brace, interim_brace, final_brace = braces = [
             Brace(
-                Line(ORIGIN, norm*RIGHT), 
+                Line(ORIGIN, norm*RIGHT),
                 UP
             )
             for norm in 1, self.v.get_length(), dot_product
@@ -642,21 +642,3 @@ class DotProductPreview(VectorScene):
             Transform(start_brace, final_brace)
         )
         self.dither()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
