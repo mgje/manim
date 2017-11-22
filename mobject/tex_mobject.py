@@ -382,8 +382,8 @@ def tex_to_dvi(tex_file):
             raise Exception(
                 "Latex error converting to dvi. "
                 "See log output above or the log file: %s" % log_file)
-    print "***** TEX to dvi ****"
-    print result
+    # print "***** TEX to dvi ****"
+    # print result
     return result
 
 def dvi_to_svg(dvi_file, regen_if_exists = False):

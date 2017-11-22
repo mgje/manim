@@ -29,13 +29,13 @@ class OpeningQuote(Scene):
     def construct(self):
         words = TextMobject(
             "``Last time, I asked: `What does",
-            "mathematics", 
-            """ mean to you?', and some people answered: `The 
-            manipulation of numbers, the manipulation of structures.' 
+            "mathematics",
+            """ mean to you?', and some people answered: `The
+            manipulation of numbers, the manipulation of structures.'
             And if I had asked what""",
             "music",
-            """means to you, would you have answered: `The 
-            manipulation of notes?' '' """, 
+            """means to you, would you have answered: `The
+            manipulation of notes?' '' """,
             enforce_new_line_structure = False,
             alignment = "",
         )
@@ -59,7 +59,7 @@ class StudentsFindThisConfusing(TeacherStudentsScene):
         students = self.get_students()
 
         self.play(
-            Write(title), 
+            Write(title),
             *[
                 ApplyMethod(pi.look_at, title)
                 for pi in self.get_pi_creatures()
@@ -71,7 +71,7 @@ class StudentsFindThisConfusing(TeacherStudentsScene):
             students[1].change_mode, "tired",
             students[2].change_mode, "sassy",
         )
-        self.random_blink()
+        #self.random_blink()
         self.student_says(
             "Why are we doing this?",
             student_index = 0,
@@ -90,8 +90,8 @@ class StudentsFindThisConfusing(TeacherStudentsScene):
         question2 = students[2].bubble.content.copy()
         question2.target = question2.copy()
         question2.target.next_to(
-            question1, DOWN, 
-            aligned_edge = LEFT, 
+            question1, DOWN,
+            aligned_edge = LEFT,
             buff = MED_SMALL_BUFF
         )
         equation = TexMobject(
@@ -106,7 +106,7 @@ class StudentsFindThisConfusing(TeacherStudentsScene):
             added_anims = [MoveToTarget(question2)]
         )
         self.change_student_modes(*["confused"]*3)
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class ShowComments(Scene):
     pass #TODO
@@ -120,7 +120,7 @@ class EigenThingsArentAllThatBad(TeacherStudentsScene):
         self.change_student_modes(
             "pondering", "pondering", "erm"
         )
-        self.random_blink(4)
+        #self.random_blink(4)
 
 class ManyPrerequisites(Scene):
     def construct(self):
@@ -134,6 +134,7 @@ class ManyPrerequisites(Scene):
         rect = Rectangle(height = 9, width = 16, color = BLUE)
         rect.scale_to_fit_width(SPACE_WIDTH-2)
         rects = [rect]+[rect.copy() for i in range(3)]
+
         words = [
             "Linear transformations",
             "Determinants",
@@ -145,7 +146,11 @@ class ManyPrerequisites(Scene):
             word_mob.next_to(rect, UP, buff = MED_SMALL_BUFF)
             rect.add(word_mob)
 
-        Matrix(np.array(rects).reshape((2, 2)))
+
+
+
+
+        Matrix(np.array(rects)[:,0].reshape(2, 2))
         rects = VGroup(*rects)
         rects.scale_to_fit_height(2*SPACE_HEIGHT - 1.5)
         rects.next_to(h_line, DOWN, buff = MED_SMALL_BUFF)
@@ -174,8 +179,8 @@ class ExampleTranformationScene(LinearTransformationScene):
         self.matrix = matrix
 
     def remove_matrix(self):
-        self.remove(self.matrix)
         self.foreground_mobjects.remove(self.matrix)
+        self.remove(self.matrix)
 
 class IntroduceExampleTransformation(ExampleTranformationScene):
     def construct(self):
@@ -196,10 +201,10 @@ class IntroduceExampleTransformation(ExampleTranformationScene):
         self.play(*[
             Transform(*pair)
             for pair in [
-                (i_coords_copy.rect, self.matrix.rect),            
+                (i_coords_copy.rect, self.matrix.rect),
                 (i_coords_copy.get_brackets(), self.matrix.get_brackets()),
                 (
-                    i_coords_copy.get_entries(), 
+                    i_coords_copy.get_entries(),
                     VGroup(*self.matrix.get_mob_matrix()[:,0])
                 )
             ]
@@ -220,7 +225,7 @@ class VectorKnockedOffSpan(ExampleTranformationScene):
         line = Line(vector.get_end()*-4, vector.get_end()*4, color = MAROON_B)
         vector.scale(0.7)
         top_words, off, span_label = all_words = TextMobject(
-            "\\centering Vector gets knocked", "\\\\ off", "Span"
+            "\\centering Vector gets knocked \\\\", "off", "Span"
         )
         all_words.shift(
             line.point_from_proportion(0.75) - \
@@ -248,7 +253,7 @@ class VectorRemainsOnSpan(ExampleTranformationScene):
         vector = Vector([1, -1])
         v_end = vector.get_end()
         line = Line(-4*v_end, 4*v_end, color = MAROON_B)
-        words = TextMobject("Vector remains on", "\\\\its own span")
+        words = TextMobject("Vector remains on \\\\", "its own span")
         words.next_to(ORIGIN, DOWN+LEFT)
         for part in words:
             part.add_to_back(BackgroundRectangle(part))
@@ -270,7 +275,7 @@ class VectorRemainsOnSpan(ExampleTranformationScene):
 class IHatAsEigenVector(ExampleTranformationScene):
     def construct(self):
         self.highlight_first_column()
-        self.highlight_x_axis()        
+        self.highlight_x_axis()
         self.apply_transposed_matrix(self.t_matrix, path_arc = 0)
         self.label_i_hat_landing_spot()
 
@@ -297,7 +302,7 @@ class IHatAsEigenVector(ExampleTranformationScene):
         ]
         for target, line in zip(targets, lines):
             self.play(
-                ShowCreation(line),                
+                ShowCreation(line),
                 Transform(self.i_hat, target),
             )
         self.dither()
@@ -318,7 +323,7 @@ class IHatAsEigenVector(ExampleTranformationScene):
             Transform(matrix.rect, array.rect),
             Transform(matrix.get_brackets(), array.get_brackets()),
             Transform(
-                VGroup(*matrix.get_mob_matrix()[:,0]), 
+                VGroup(*matrix.get_mob_matrix()[:,0]),
                 array.get_entries()
             ),
         )
@@ -341,10 +346,10 @@ class SneakierEigenVector(ExampleTranformationScene):
     def construct(self):
         coords = [-1, 1]
         vector = Vector(coords)
-        array = Matrix(coords)
+        array = Matrix([coords])
         array.scale(0.7)
         array.highlight(vector.get_color())
-        array.add_to_back(BackgroundRectangle(array))        
+        array.add_to_back(BackgroundRectangle(array))
         array.target = array.copy()
         array.next_to(vector.get_end(), LEFT)
         array.target.next_to(2*vector.get_end(), LEFT)
@@ -359,7 +364,7 @@ class SneakierEigenVector(ExampleTranformationScene):
         self.add_vector(vector)
         self.play(Write(array))
         self.play(
-            ShowCreation(span_line), 
+            ShowCreation(span_line),
             Animation(vector),
             Animation(array),
         )
@@ -451,8 +456,8 @@ class NameEigenvectorsAndEigenvalues(ExampleTranformationScene):
 
         non_eigen = Vector([1, 1], color = PINK)
         non_eigen_span = Line(
-            -SPACE_HEIGHT*non_eigen.get_end(), 
-            SPACE_HEIGHT*non_eigen.get_end(), 
+            -SPACE_HEIGHT*non_eigen.get_end(),
+            SPACE_HEIGHT*non_eigen.get_end(),
             color = RED
         )
         non_eigen_words = TextMobject("""
@@ -495,9 +500,9 @@ class NameEigenvectorsAndEigenvalues(ExampleTranformationScene):
 class CanEigenvaluesBeNegative(TeacherStudentsScene):
     def construct(self):
         self.student_says("Can eigenvalues be negative?")
-        self.random_blink()
+        #self.random_blink()
         self.teacher_says("But of course!", target_mode = "hooray")
-        self.random_blink()
+        #self.random_blink()
 
 class EigenvalueNegativeOneHalf(LinearTransformationScene):
     CONFIG = {
@@ -522,14 +527,14 @@ class EigenvalueNegativeOneHalf(LinearTransformationScene):
         words.add_background_rectangle()
         words.next_to(vector.get_end(), RIGHT)
         span = Line(
-            -SPACE_HEIGHT*vector.get_end(), 
+            -SPACE_HEIGHT*vector.get_end(),
             SPACE_HEIGHT*vector.get_end(),
             color = MAROON_B
         )
 
         self.play(Write(words))
         self.play(
-            ShowCreation(span), 
+            ShowCreation(span),
             Animation(vector),
             Animation(words),
         )
@@ -544,7 +549,7 @@ class EigenvalueNegativeOneHalf(LinearTransformationScene):
             Animation(vector),
         )
         self.dither()
-        
+
 class ThreeDRotationTitle(Scene):
     def construct(self):
         title = TextMobject("3D Rotation")
@@ -581,7 +586,7 @@ class EigenvalueOne(Scene):
 class ContrastMatrixUnderstandingWithEigenvalue(TeacherStudentsScene):
     def construct(self):
         axis_and_rotation = TextMobject(
-            "Rotate", "$30^\\circ$", "around", 
+            "Rotate", "$30^\\circ$", "around",
             "$%s$"%matrix_to_tex_string([2, 3, 1])
         )
         axis_and_rotation[1].highlight(BLUE)
@@ -589,7 +594,7 @@ class ContrastMatrixUnderstandingWithEigenvalue(TeacherStudentsScene):
 
         matrix = Matrix([
             [
-                "\\cos(\\theta)\\cos(\\phi)", 
+                "\\cos(\\theta)\\cos(\\phi)",
                 "-\\sin(\\phi)",
                 "\\cos(\\theta)\\sin(\\phi)",
             ],
@@ -619,7 +624,7 @@ class ContrastMatrixUnderstandingWithEigenvalue(TeacherStudentsScene):
             )),
             run_time = 2
         )
-        self.random_blink(2)
+        #self.random_blink(2)
         self.play(
             Transform(axis_and_rotation, matrix),
             *it.chain(*zip(
@@ -630,22 +635,22 @@ class ContrastMatrixUnderstandingWithEigenvalue(TeacherStudentsScene):
             ))
 
         )
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class CommonPattern(TeacherStudentsScene):
     def construct(self):
         self.teacher_says("""
-            This is a common pattern 
+            This is a common pattern
             in linear algebra.
         """)
-        self.random_blink(2)
+        #self.random_blink(2)
 
 class DeduceTransformationFromMatrix(ColumnsToBasisVectors):
     def construct(self):
         self.setup()
         self.move_matrix_columns([[3, 0], [1, 2]])
         words = TextMobject("""
-            This gives too much weight 
+            This gives too much weight
             to our coordinate system
         """)
         words.add_background_rectangle()
@@ -662,13 +667,13 @@ class WordsOnComputation(TeacherStudentsScene):
             target_mode = "guilty"
         )
         self.change_student_modes("angry", "sassy", "angry")
-        self.random_blink()
+        #self.random_blink()
         self.teacher_says(
             "...but I'll hit the \\\\",
             "important parts"
         )
         self.change_student_modes(*["happy"]*3)
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class SymbolicEigenvectors(Scene):
     def construct(self):
@@ -680,7 +685,7 @@ class SymbolicEigenvectors(Scene):
 
     def introduce_terms(self):
         self.expression = TexMobject(
-            "A", "\\vec{\\textbf{v}}", "=", 
+            "A", "\\vec{\\textbf{v}}", "=",
             "\\lambda", "\\vec{\\textbf{v}}"
         )
         self.expression.scale(1.5)
@@ -725,7 +730,7 @@ class SymbolicEigenvectors(Scene):
         )
         self.dither(2)
         self.play(*map(FadeOut, [
-            A_brace, A_text, 
+            A_brace, A_text,
             lamb_brace, lamb_text,
             v_text, v_arrows
         ]))
@@ -752,7 +757,7 @@ class SymbolicEigenvectors(Scene):
 
         morty = Mortimer().to_edge(DOWN)
         morty.change_mode("speaking")
-        bubble = morty.get_bubble(SpeechBubble, width = 5, direction = LEFT)
+        bubble = morty.get_bubble( width = 5, direction = LEFT)
         VGroup(morty, bubble).to_edge(RIGHT)
         solve_text = TextMobject(
             "Solve for \\\\",
@@ -769,7 +774,7 @@ class SymbolicEigenvectors(Scene):
         )
         self.play(Blink(morty))
         self.dither(2)
-        bubble.write("Fix different", "\\\\ multiplication", "types")
+        bubble.write("Fix different \\\\", "multiplication", "types")
         self.play(
             Transform(solve_text, bubble.content),
             morty.change_mode, "sassy"
@@ -838,7 +843,7 @@ class SymbolicEigenvectors(Scene):
         ))
         self.dither()
         self.play(Transform(
-            q_marks, matrix.get_entries(), 
+            q_marks, matrix.get_entries(),
             submobject_mode = "lagged_start",
             run_time = 2
         ))
@@ -863,7 +868,7 @@ class SymbolicEigenvectors(Scene):
         for mob in lamb, id_text, v2:
             mob.target = mob.copy()
         VGroup(
-            l_paren, lamb.target, id_text.target, 
+            l_paren, lamb.target, id_text.target,
             r_paren, v2.target
         ).arrange_submobjects().next_to(equals).shift(SMALL_BUFF*UP)
         self.play(
@@ -875,7 +880,7 @@ class SymbolicEigenvectors(Scene):
             corner_group, id_brace, id_text_copy, new_lamb
         ]))
         self.expression = VGroup(
-            A, v1, equals, 
+            A, v1, equals,
             VGroup(l_paren, lamb, id_text, r_paren),
             v2
         )
@@ -896,7 +901,7 @@ class SymbolicEigenvectors(Scene):
             lamb_group.target, v2.target
         ).arrange_submobjects().next_to(equals, LEFT)
         self.play(
-            Write(zero), 
+            Write(zero),
             Write(minus),
             *map(MoveToTarget, movers),
             path_arc = np.pi/3
@@ -918,9 +923,9 @@ class SymbolicEigenvectors(Scene):
         brace.text.next_to(brace, DOWN)
         brace.text.to_edge(LEFT)
         matrix = Matrix([
-            ["3-\\lambda", "1", "4"],
-            ["1", "5-\\lambda", "9"],
-            ["2", "6", "5-\\lambda"],
+            ["$3- \\lambda$", "1", "4"],
+            ["1", "$5- \\lambda$", "9"],
+            ["2", "6", "$5- \\lambda$"],
         ])
         matrix.scale(0.7)
         VGroup(
@@ -946,7 +951,7 @@ class SymbolicEigenvectors(Scene):
         vect_words.to_corner(UP+LEFT)
         arrow = Arrow(vect_words.get_bottom(), v2.get_top())
         self.play(
-            Write(vect_words), 
+            Write(vect_words),
             ShowCreation(arrow)
         )
         self.dither()
@@ -955,7 +960,7 @@ class SymbolicEigenvectors(Scene):
         randy = Randolph(mode = "speaking").to_edge(DOWN)
         randy.flip()
         randy.look_at(self.expression)
-        bubble = randy.get_bubble(SpeechBubble, direction = LEFT, width = 5)
+        bubble = randy.get_bubble( direction = LEFT, width = 5)
         words = TextMobject("We need")
         equation = TexMobject(
             "\\det(A-", "\\lambda", "I)", "=0"
@@ -1106,14 +1111,15 @@ class TweakLambda(LinearTransformationScene):
         transformations = []
         for mob in self.plane_mobjects:
             mob.target = mob.copy().restore().apply_function(matrix_transform)
-            transformations.append(MoveToTarget(mob))
+            if isinstance(mob,Square):
+                transformations.append(MoveToTarget(mob))
         transformations += [
             Transform(
-                self.i_hat, 
+                self.i_hat,
                 Vector(matrix_transform(RIGHT), color = X_COLOR)
             ),
             Transform(
-                self.j_hat, 
+                self.j_hat,
                 Vector(matrix_transform(UP), color = Y_COLOR)
             ),
         ]
@@ -1169,7 +1175,7 @@ class ShowEigenVectorAfterComputing(LinearTransformationScene):
         v_label = TexMobject(
             "\\vec{\\textbf{v}}",
             "=",
-            "1", 
+            "1",
             "\\vec{\\textbf{v}}",
         )
         v_label.next_to(matrix, RIGHT)
@@ -1220,7 +1226,7 @@ class IfYouDidntKnowDeterminants(TeacherStudentsScene):
         expression.highlight_by_tex("\\lambda", MAROON_B)
         expression.scale(1.3)
         self.teacher_says(expression)
-        self.random_blink()
+        #self.random_blink()
         student = self.get_students()[0]
         bubble = get_small_bubble(student)
         bubble.write("Wait...why?")
@@ -1229,7 +1235,7 @@ class IfYouDidntKnowDeterminants(TeacherStudentsScene):
             Write(bubble.content),
             student.change_mode, "confused"
         )
-        self.random_blink(4)
+        #self.random_blink(4)
 
 class RevisitExampleTransformation(ExampleTranformationScene):
     def construct(self):
@@ -1266,7 +1272,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
             coords.rect = BackgroundRectangle(coords)
             coords.add_to_back(coords.rect)
             coords.next_to(
-                vect.get_end(), 
+                vect.get_end(),
                 RIGHT+DOWN if coords is i_coords else RIGHT
             )
         self.play(
@@ -1277,10 +1283,10 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         self.play(*[
             Transform(*pair)
             for pair in [
-                (i_coords.rect, self.matrix.rect),            
+                (i_coords.rect, self.matrix.rect),
                 (i_coords.get_brackets(), self.matrix.get_brackets()),
                 (
-                    i_coords.get_entries(), 
+                    i_coords.get_entries(),
                     VGroup(*self.matrix.get_mob_matrix()[:,0])
                 )
             ]
@@ -1319,7 +1325,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         rect.target = BackgroundRectangle(
             VGroup(l_bracket.target, r_bracket.target)
         )
-        result = map(MoveToTarget, movers) 
+        result = map(MoveToTarget, movers)
         result += map(Write, [minus1, minus2])
         result += map(Animation, [
             self.matrix.get_mob_matrix()[i, 1-i]
@@ -1385,7 +1391,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         )
         self.dither()
         self.play(
-            Write(parens),            
+            Write(parens),
             MoveToTarget(three_minus_lamb),
             MoveToTarget(two_minus_lamb),
             run_time = 2
@@ -1417,9 +1423,9 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         )
         self.dither()
         faders = [
-            det_text, equals, parens, 
+            det_text, equals, parens,
             three_minus_lamb, two_minus_lamb,
-            brace, brace_text, equals_0, 
+            brace, brace_text, equals_0,
         ]
         if to_fade is not None:
             faders.append(to_fade)
@@ -1427,7 +1433,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
             map(FadeOut, faders),
             [
                 lambda_equals_two.scale_in_place, 1.3,
-                lambda_equals_two.next_to, self.matrix, DOWN                
+                lambda_equals_two.next_to, self.matrix, DOWN
             ]
         ))
         self.add_foreground_mobject(lambda_equals_two)
@@ -1443,7 +1449,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
             self.play(Transform(lamb, two))
         self.play(*it.chain(
             [mob.restore for mob in self.plane, self.i_hat, self.j_hat],
-            map(Animation, self.foreground_mobjects),            
+            map(Animation, self.foreground_mobjects),
         ))
 
         xy_array = Matrix(["x", "y"])
@@ -1468,7 +1474,7 @@ class RevisitExampleTransformation(ExampleTranformationScene):
         vectors.save_state()
         self.play(
             ShowCreation(
-                vectors, 
+                vectors,
                 submobject_mode = "lagged_start",
                 run_time = 2
             ),
@@ -1516,7 +1522,7 @@ class ThereMightNotBeEigenvectors(TeacherStudentsScene):
             There could be
             \\emph{no} eigenvectors
         """)
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class Rotate90Degrees(LinearTransformationScene):
     CONFIG = {
@@ -1554,7 +1560,7 @@ class SolveRotationEigenvalues(Rotate90Degrees):
         self.apply_transposed_matrix(self.t_matrix, run_time = 0)
         self.dither()
         diag_entries = [
-            self.matrix.get_mob_matrix()[i, i] 
+            self.matrix.get_mob_matrix()[i, i]
             for i in range(2)
         ]
         off_diag_entries = [
@@ -1613,13 +1619,13 @@ class SolveRotationEigenvalues(Rotate90Degrees):
         self.dither()
 
         interesting_tidbit = TextMobject("""
-            Interestingly, though, the fact that multiplication by i 
-            in the complex plane looks like a 90 degree rotation is 
-            related to the fact that i is an eigenvalue of this 
-            transformation of 2d real vectors. The specifics of this 
-            are a little beyond what I want to talk about today, but 
-            note that that eigenvalues which are complex numbers 
-            generally correspond to some kind of rotation in the 
+            Interestingly, though, the fact that multiplication by i
+            in the complex plane looks like a 90 degree rotation is
+            related to the fact that i is an eigenvalue of this
+            transformation of 2d real vectors. The specifics of this
+            are a little beyond what I want to talk about today, but
+            note that that eigenvalues which are complex numbers
+            generally correspond to some kind of rotation in the
             transformation.
         """, alignment = "")
         interesting_tidbit.add_background_rectangle()
@@ -1722,7 +1728,7 @@ class ShearExample(RevisitExampleTransformation):
         )
         self.dither()
         self.play(
-            Write(parens),            
+            Write(parens),
             MoveToTarget(three_minus_lamb),
             MoveToTarget(two_minus_lamb),
             run_time = 2
@@ -1753,9 +1759,9 @@ class ShearExample(RevisitExampleTransformation):
         )
         self.dither()
         # faders = [
-        #     det_text, equals, parens, 
+        #     det_text, equals, parens,
         #     three_minus_lamb, two_minus_lamb,
-        #     brace, brace_text, equals_0, 
+        #     brace, brace_text, equals_0,
         # ]
         # if to_fade is not None:
         #     faders.append(to_fade)
@@ -1763,7 +1769,7 @@ class ShearExample(RevisitExampleTransformation):
         #     map(FadeOut, faders),
         #     [
         #         lambda_equals_two.scale_in_place, 1.3,
-        #         lambda_equals_two.next_to, self.matrix, DOWN                
+        #         lambda_equals_two.next_to, self.matrix, DOWN
         #     ]
         # ))
         # self.add_foreground_mobject(lambda_equals_two)
@@ -1773,12 +1779,12 @@ class ShearExample(RevisitExampleTransformation):
 class EigenvalueCanHaveMultipleEigenVectors(TeacherStudentsScene):
     def construct(self):
         self.teacher_says("""
-            A single eigenvalue can 
+            A single eigenvalue can
             have more that a line
             full of eigenvectors
         """)
         self.change_student_modes(*["pondering"]*3)
-        self.random_blink(2)
+        #self.random_blink(2)
 
 class ScalingExample(LinearTransformationScene):
     CONFIG = {
@@ -1812,7 +1818,7 @@ class IntroduceEigenbasis(TeacherStudentsScene):
         self.change_student_modes(
             "pondering", "raise_right_hand", "erm"
         )
-        self.random_blink()
+        #self.random_blink()
         new_words = VGroup(words1.copy(), words2)
         new_words.arrange_submobjects(DOWN, buff = MED_SMALL_BUFF)
         new_words.scale(0.8)
@@ -1827,7 +1833,7 @@ class IntroduceEigenbasis(TeacherStudentsScene):
             student.change_mode, "guilty",
             student.look, LEFT
         )
-        self.random_blink(2)
+        #self.random_blink(2)
 
 class BasisVectorsAreEigenvectors(LinearTransformationScene):
     CONFIG = {
@@ -1855,10 +1861,10 @@ class BasisVectorsAreEigenvectors(LinearTransformationScene):
         self.apply_transposed_matrix([[1, 0], self.t_matrix[1]])
         self.dither()
 
-        i_coords = Matrix(self.t_matrix[0])
+        i_coords = Matrix([self.t_matrix[0]])
         i_coords.next_to(self.i_hat.get_end(), DOWN+LEFT)
         i_coords.highlight(X_COLOR)
-        j_coords = Matrix(self.t_matrix[1])
+        j_coords = Matrix([self.t_matrix[1]])
         j_coords.next_to(self.j_hat.get_end(), RIGHT)
         j_coords.highlight(Y_COLOR)
 
@@ -1972,7 +1978,7 @@ class RepeatedMultiplicationInAction(Scene):
             *map(MoveToTarget, scalars + [l_bracket])
         )
         self.dither()
-        #nth multiplications                    
+        #nth multiplications
         for scalar in scalars:
             scalar.exp = VectorizedPoint(scalar.get_corner(UP+RIGHT))
             scalar.exp.shift(SMALL_BUFF*RIGHT/2.)
@@ -2093,9 +2099,9 @@ class WhatAreTheOddsOfThat(TeacherStudentsScene):
             Sure, but what are the
             odds of that happening?
         """)
-        self.random_blink()
+        #self.random_blink()
         self.change_student_modes("pondering")
-        self.random_blink(3)
+        #self.random_blink(3)
 
 class LastVideo(Scene):
     def construct(self):
@@ -2142,7 +2148,7 @@ class ChangeToEigenBasis(ExampleTranformationScene):
         self.dither()
         self.plane.save_state()
         self.apply_transposed_matrix(
-            self.t_matrix, 
+            self.t_matrix,
             rate_func = there_and_back,
             path_arc = 0
         )
@@ -2227,8 +2233,8 @@ class ChangeToEigenBasis(ExampleTranformationScene):
             self.matrix, LEFT, buff = neg_1.get_width()+2*SMALL_BUFF
         )
         neg_1.next_to(
-            inv_cob.target.get_corner(UP+RIGHT), 
-            RIGHT, 
+            inv_cob.target.get_corner(UP+RIGHT),
+            RIGHT,
         )
         self.play(
             MoveToTarget(inv_cob, path_arc = -np.pi/2),
@@ -2239,7 +2245,7 @@ class ChangeToEigenBasis(ExampleTranformationScene):
         self.play(*map(FadeOut, self.to_fade))
         self.dither()
         self.play(FadeOut(self.plane))
-        cob_transform = self.get_matrix_transformation([[1, 0], [-1, 1]])        
+        cob_transform = self.get_matrix_transformation([[1, 0], [-1, 1]])
         ApplyMethod(self.plane.apply_function, cob_transform).update(1)
         self.plane.main_lines.highlight(BLUE_D)
         self.plane.axes.highlight(WHITE)
@@ -2300,20 +2306,4 @@ class CannotDoWithWithAllTransformations(TeacherStudentsScene):
             can become diagonal
         """)
         self.change_student_modes(*["tired"]*3)
-        self.random_blink(2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #self.random_blink(2)

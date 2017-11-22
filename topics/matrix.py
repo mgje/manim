@@ -67,7 +67,7 @@ class Matrix(VMobject):
         VMobject.__init__(self, **kwargs)
         # print "START"
         # print matrix
-        print matrix
+        #print matrix
         matrix = np.array(matrix)
         # print "AFTER NP"
 
@@ -101,11 +101,11 @@ class Matrix(VMobject):
 
     def string_matrix_to_mob_matrix(self, matrix):
         # print len(matrix)
-        print matrix.shape
+        # print matrix.shape
         texOl = [map(TextMobject, row) for row in matrix]
-        print texOl
-        print "input matrix"
-        print matrix
+        # print texOl
+        # print "input matrix"
+        # print matrix
         #print dir(texOl)
         # print "nummer of things XXXXXXXXXXXXXXXXXXXX"
         # print "len of tex"
@@ -129,18 +129,24 @@ class Matrix(VMobject):
         # Probleme with the numpy array !! make it explicit
         n = len(texOl)
         m = len(texOl[0])
-        print n
-        print m
+        # print n
+        # print m
+        # print texOl
+        #
+        #print matrix.shape
 
 
         arr = np.empty(n*m,dtype=object)
+        # print arr
 
         for i in range(n):
             for j in range(m):
-                arr[i*m+j]=texOl[i][j]
+                # print i,j
+                tmp =texOl[i][j]
+                arr[i*m+j]=tmp
 
-        print arr
-        print matrix.shape
+        # print arr
+        # print matrix.shape
         # print texOl
 
 

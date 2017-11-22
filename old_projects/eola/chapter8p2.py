@@ -27,8 +27,8 @@ class OpeningQuote(Scene):
     def construct(self):
         words = TextMobject(
             "From [Grothendieck], I have also learned not",
-            "to take glory in the ", 
-            "difficulty of a proof:", 
+            "to take glory in the ",
+            "difficulty of a proof:",
             "difficulty means we have not understood.",
             "The idea is to be able to ",
             "paint a landscape",
@@ -70,15 +70,15 @@ class DeterminantTrickCopy(DeterminantTrick):
 
 class BruteForceVerification(Scene):
     def construct(self):
-        v = Matrix(["v_1", "v_2", "v_3"])
-        w = Matrix(["w_1", "w_2", "w_3"])
+        v = Matrix([["$v_1$"], ["$v_2$"], ["$v_3$"]])
+        w = Matrix([["$w_1$"], ["$w_2$"], ["$w_3$"]])
         v1, v2, v3 = v.get_entries()
         w1, w2, w3 = w.get_entries()
         v.highlight(V_COLOR)
         w.highlight(W_COLOR)
         def get_term(e1, e2, e3, e4):
             group = VGroup(
-                e1.copy(), e2.copy(), 
+                e1.copy(), e2.copy(),
                 TexMobject("-"),
                 e3.copy(), e4.copy(),
             )
@@ -122,14 +122,14 @@ class BruteForceVerification(Scene):
         v_tex, w_tex = get_vect_tex(*"vw")
         v_dot, w_dot = [
             TexMobject(
-                tex, "\\cdot", 
+                tex, "\\cdot",
                 "(", v_tex, "\\times", w_tex, ")",
                 "= 0"
             )
             for tex in v_tex, w_tex
         ]
         theta_def = TexMobject(
-            "\\theta", 
+            "\\theta",
             "= \\cos^{-1} \\big(", v_tex, "\\cdot", w_tex, "/",
             "(||", v_tex, "||", "\\cdot", "||", w_tex, "||)", "\\big)"
         )
@@ -172,13 +172,13 @@ class Prerequisites(Scene):
             for edge in LEFT, RIGHT
         ]
         chapter5 = TextMobject("""
-            \\centering 
-            Chapter 5 
+            \\centering
+            Chapter 5
             Determinants
         """)
         chapter7 = TextMobject("""
             \\centering
-            Chapter 7: 
+            Chapter 7:
             Dot products and duality
         """)
 
@@ -188,7 +188,7 @@ class Prerequisites(Scene):
                 chapter.scale_to_fit_width(rect.get_width())
             chapter.next_to(rect, UP)
             self.play(
-                Write(chapter5), 
+                Write(chapter5),
                 ShowCreation(left_rect)
             )
         self.play(
@@ -207,7 +207,7 @@ class DualityReview(TeacherStudentsScene):
 
 class DotProductToTransformSymbol(Scene):
     CONFIG = {
-        "vect_coords" : [2, 1]
+        "vect_coords" : ["2", "1"]
     }
     def construct(self):
         v_mob = TexMobject(get_vect_tex("v"))
@@ -239,7 +239,7 @@ class DotProductToTransformSymbol(Scene):
         left_v_brace = Brace(left_input, UP)
         left_v_mob = v_mob.copy()
         left_v_brace.put_at_tip(left_v_mob)
-        left_input.add(left_v_brace, left_v_mob)        
+        left_input.add(left_v_brace, left_v_mob)
 
 
         self.add(matrix, right_input)
@@ -271,7 +271,7 @@ class MathematicalWild(Scene):
         bubble = ThoughtBubble(width = 5, height = 4)
         bubble.write("""
             \\centering
-            Some linear 
+            Some linear
             transformation
             to the number line
         """)
@@ -312,7 +312,7 @@ class ThreeStepPlan(Scene):
 
         v_tex, w_tex = get_vect_tex(*"vw")
         v_text, w_text, cross_text = [
-            "$%s$"%s 
+            "$%s$"%s
             for s in v_tex, w_tex, v_tex + "\\times" + w_tex
         ]
         steps = [
@@ -355,7 +355,7 @@ class ThreeStepPlan(Scene):
         steps[0].remove(linear, transformation)
         self.play(
             Transform(
-                VGroup(linear, transformation), 
+                VGroup(linear, transformation),
                 linear_transformation
             ),
             *map(FadeOut, steps)
@@ -367,11 +367,16 @@ class ThreeStepPlan(Scene):
         self.dither(0)
 
     def get_det(self):
-        matrix = Matrix(np.array([
-            ["\\hat{\\imath}", "\\hat{\\jmath}", "\\hat{k}"],
-            ["v_%d"%d for d in range(1, 4)],
-            ["w_%d"%d for d in range(1, 4)],
-        ]).T)
+
+        m = np.array([
+            ["$\\hat{\\imath}$", "$\\hat{\\jmath}$", "$\\hat{k}$"],
+            ["$v_%d$"%d for d in range(1, 4)],
+            ["$w_%d$"%d for d in range(1, 4)],
+        ]).T
+
+        print m
+
+        matrix = Matrix(m)
         matrix.highlight_columns(X_COLOR, V_COLOR, W_COLOR)
         matrix.get_mob_matrix()[1, 0].highlight(Y_COLOR)
         matrix.get_mob_matrix()[2, 0].highlight(Z_COLOR)
@@ -404,14 +409,22 @@ class DefineDualTransform(Scene):
         colors = [WHITE, ORANGE, W_COLOR]
         tex_mobs = map(TexMobject, get_vect_tex(*"uvw"))
         u_tex, v_tex, w_tex = tex_mobs
-        arrays = [
-            Matrix(["%s_%d"%(s, d) for d in range(1, 4)])
+
+
+
+
+
+        arr = [
+            ["$%s_%d$"%(s, d) for d in range(1, 4)]
             for s in "uvw"
         ]
+
+        arrays = Matrix(arr)
+
         defs_equals = VGroup()
         definitions = VGroup()
         for array, tex_mob, color in zip(arrays, tex_mobs, colors):
-            array.highlight_columns(color)
+            #array.highlight_columns(color)
             tex_mob.highlight(color)
             equals = TexMobject("=")
             definition = VGroup(tex_mob, equals, array)
@@ -422,17 +435,16 @@ class DefineDualTransform(Scene):
         definitions.shift(2*DOWN)
 
         mobs_with_targets = list(it.chain(
-            tex_mobs, *[a.get_entries() for a in arrays]
+            tex_mobs, *[a for a in arrays]
         ))
         for mob in mobs_with_targets:
             mob.target = mob.copy()
         matrix = Matrix(np.array([
-            [e.target for e in array.get_entries()]
-            for array in arrays
+            e for e in arrays
         ]).T)
         det_text = get_det_text(matrix, background_rect = False)
         syms = times1, times2, equals = [
-            TexMobject(sym) 
+            TexMobject(sym)
             for sym in "\\times", "\\times", "=",
         ]
         triple_cross = VGroup(
@@ -447,10 +459,10 @@ class DefineDualTransform(Scene):
         for mob in definitions, final_mobs:
             mob.scale_to_fit_width(SPACE_WIDTH - 1)
 
-        for array in arrays:
-            brackets = array.get_brackets()
-            brackets.target = matrix.get_brackets()
-            mobs_with_targets.append(brackets)
+        # for array in arrays:
+        #     brackets = array.get_brackets()
+        #     brackets.target = matrix.get_brackets()
+        #     mobs_with_targets.append(brackets)
         for def_equals in defs_equals:
             def_equals.target = equals
             mobs_with_targets.append(def_equals)
@@ -504,19 +516,19 @@ class DefineDualTransform(Scene):
 
         x, y, z = variables = map(TexMobject, "xyz")
         for var, entry in zip(variables, self.u_entries):
-            var.scale(0.8) 
+            var.scale(0.8)
             var.move_to(entry)
             entry.target = var
         brace.target = Brace(z)
         brace.target.stretch_to_fit_width(0.5)
         number_text.target = brace.target.get_text("Variable")
-        v_brace = Brace(self.matrix.get_mob_matrix()[0, 1], UP)
-        w_brace = Brace(self.matrix.get_mob_matrix()[0, 2], UP)
-        for vect_brace, tex in (v_brace, self.v_tex), (w_brace, self.w_tex):
-            vect_brace.stretch_to_fit_width(brace.target.get_width())
-            new_tex = tex.copy()
-            vect_brace.put_at_tip(new_tex)
-            vect_brace.tex = new_tex
+        # v_brace = Brace(self.matrix.get_mob_matrix()[0, 1], UP)
+        # w_brace = Brace(self.matrix.get_mob_matrix()[0, 2], UP)
+        # for vect_brace, tex in (v_brace, self.v_tex), (w_brace, self.w_tex):
+        #     vect_brace.stretch_to_fit_width(brace.target.get_width())
+        #     new_tex = tex.copy()
+        #     vect_brace.put_at_tip(new_tex)
+        #     vect_brace.tex = new_tex
         func_tex = TexMobject(
             "f\\left(%s\\right)"%matrix_to_tex_string(list("xyz"))
         )
@@ -546,10 +558,10 @@ class DefineDualTransform(Scene):
             Transform(mob, mob.target)
             for mob in self.u_entries
         ])
-        self.play(*[
-            Write(VGroup(vect_brace, vect_brace.tex))
-            for vect_brace in v_brace, w_brace
-        ])
+        # self.play(*[
+        #     Write(VGroup(vect_brace, vect_brace.tex))
+        #     for vect_brace in v_brace, w_brace
+        # ])
         self.dither()
         self.play(Write(func_tex))
         self.dither()
@@ -567,19 +579,19 @@ class DefineDualTransform(Scene):
         title = VGroup(TextMobject("This function is linear"))
         title.highlight(GREEN)
         title.to_edge(UP)
-        matrix = Matrix([list(q_marks.copy())])
-        matrix.scale_to_fit_height(self.func_tex.get_height()/2)
-        dual_vector = Matrix(list(q_marks))
-        dual_vector.scale_to_fit_height(self.func_tex.get_height())
-        dual_vector.get_brackets()[0].shift(0.2*LEFT)
-        dual_vector.get_entries().shift(0.1*LEFT)
-        dual_vector.scale(1.25)
-        dual_dot = VGroup(
-            dual_vector,
-            TexMobject("\\cdot").next_to(dual_vector)
-        )
+        # matrix = Matrix([list(q_marks.copy())])
+        # matrix.scale_to_fit_height(self.func_tex.get_height()/2)
+        # dual_vector = Matrix(list(q_marks))
+        # dual_vector.scale_to_fit_height(self.func_tex.get_height())
+        # dual_vector.get_brackets()[0].shift(0.2*LEFT)
+        # dual_vector.get_entries().shift(0.1*LEFT)
+        # dual_vector.scale(1.25)
+        # dual_dot = VGroup(
+        #     dual_vector,
+        #     TexMobject("\\cdot").next_to(dual_vector)
+        # )
         matrix_words = TextMobject("""
-            $1 \\times 3$ matrix encoding the 
+            $1 \\times 3$ matrix encoding the
             3d-to-1d linear transformation
         """)
 
@@ -595,55 +607,55 @@ class DefineDualTransform(Scene):
         func_input.target = func_input.copy()
         func_input.target.scale(1.2)
         func_input.target.move_to(self.func_tex, aligned_edge = RIGHT)
-        matrix.next_to(func_input.target, LEFT)
-        dual_dot.next_to(func_input.target, LEFT)
-        matrix_words.next_to(matrix, DOWN, buff = 1.5)
-        matrix_words.shift_onto_screen()
-        matrix_arrow = Arrow(
-            matrix_words.get_top(),
-            matrix.get_bottom(),
-            color = WHITE
-        )
-
-        self.play(
-            Transform(func, matrix),
-            MoveToTarget(func_input),
-            FadeOut(self.variables_text),
-        )
-        self.dither()
-        self.play(
-            Write(matrix_words),
-            ShowCreation(matrix_arrow)
-        )
-        self.dither(2)
-        self.play(*map(FadeOut, [matrix_words, matrix_arrow]))
-        self.play(
-            Transform(func, dual_vector),
-            Write(dual_dot[1])
-        )
+        # matrix.next_to(func_input.target, LEFT)
+        # dual_dot.next_to(func_input.target, LEFT)
+        # matrix_words.next_to(matrix, DOWN, buff = 1.5)
+        # matrix_words.shift_onto_screen()
+        # matrix_arrow = Arrow(
+        #     matrix_words.get_top(),
+        #     matrix.get_bottom(),
+        #     color = WHITE
+        # )
+        #
+        # self.play(
+        #     Transform(func, matrix),
+        #     MoveToTarget(func_input),
+        #     FadeOut(self.variables_text),
+        # )
+        # self.dither()
+        # self.play(
+        #     Write(matrix_words),
+        #     ShowCreation(matrix_arrow)
+        # )
+        # self.dither(2)
+        # self.play(*map(FadeOut, [matrix_words, matrix_arrow]))
+        # self.play(
+        #     Transform(func, dual_vector),
+        #     Write(dual_dot[1])
+        # )
         self.dither()
 
         p_coords = VGroup(*map(TexMobject, [
             "p_%d"%d for d in range(1, 4)
         ]))
-        p_coords.highlight(RED)        
+        p_coords.highlight(RED)
         p_array = Matrix(list(p_coords))
-        p_array.scale_to_fit_height(dual_vector.get_height())
-        p_array.move_to(dual_vector, aligned_edge = RIGHT)
-        p_brace = Brace(p_array, UP)
-        p_tex = TexMobject(get_vect_tex("p"))
-        p_tex.highlight(P_COLOR)
-        p_brace.put_at_tip(p_tex)
+        # p_array.scale_to_fit_height(dual_vector.get_height())
+        # p_array.move_to(dual_vector, aligned_edge = RIGHT)
+        # p_brace = Brace(p_array, UP)
+        # p_tex = TexMobject(get_vect_tex("p"))
+        # p_tex.highlight(P_COLOR)
+        # p_brace.put_at_tip(p_tex)
 
-        self.play(
-            GrowFromCenter(p_brace),
-            Write(p_tex)
-        )
-        self.play(Transform(
-            func, p_array,
-            run_time = 2,
-            submobject_mode = "lagged_start"
-        ))
+        # self.play(
+        #     GrowFromCenter(p_brace),
+        #     Write(p_tex)
+        # )
+        # self.play(Transform(
+        #     func, p_array,
+        #     run_time = 2,
+        #     submobject_mode = "lagged_start"
+        # ))
         self.remove(func)
         self.add(p_array)
         self.dither()
@@ -764,8 +776,8 @@ class DefineDualTransform(Scene):
         everything = VGroup(*self.get_mobjects())
         p_tex = "$%s$"%get_vect_tex("p")
         question = TextMobject(
-            "What vector", 
-            p_tex, 
+            "What vector",
+            p_tex,
             "has \\\\ the property that"
         )
         question.to_edge(UP)
@@ -806,7 +818,7 @@ class ThreeDMovingVariableVectorWithCrossShowing(Scene):
 class NowForTheCoolPart(TeacherStudentsScene):
     def construct(self):
         self.teacher_says(
-            "Now for the\\\\", 
+            "Now for the\\\\",
             "cool part"
         )
         self.change_student_modes(*["happy"]*3)
@@ -887,7 +899,7 @@ class WriteXYZ(Scene):
         self.dither()
 
 class ThreeDDotProductWithCross(Scene):
-    pass 
+    pass
 
 class CrossVectorEmphasisWords(Scene):
     def construct(self):
@@ -989,17 +1001,3 @@ class ChangeOfBasisPreview(LinearTransformationScene):
             self.j_hat.restore,
         )
         self.dither()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
