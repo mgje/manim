@@ -32,7 +32,7 @@ class Rotating(Animation):
         elif self.in_place: #This is superseeded
             self.about_point = self.mobject.get_center()
         self.mobject.rotate(
-            alpha*self.radians, 
+            alpha*self.radians,
             axes = axes,
             about_point = self.about_point
         )
@@ -65,7 +65,7 @@ class Write(ShowCreation):
         "submobject_mode" : "lagged_start",
     }
     def __init__(self, mob_or_text, **kwargs):
-        digest_config(self, kwargs)        
+        digest_config(self, kwargs)
         if isinstance(mob_or_text, str):
             mobject = TextMobject(mob_or_text)
         else:
@@ -106,7 +106,7 @@ class DrawBorderThenFill(Animation):
         )
         if alpha < 0.5:
             if self.stroke_color:
-                color = self.stroke_color 
+                color = self.stroke_color
             elif starting_submobject.stroke_width > 0:
                 color = starting_submobject.get_stroke_color()
             else:
@@ -216,7 +216,7 @@ class PhaseFlow(Animation):
         "rate_func" : None,
     }
     def __init__(self, function, mobject, **kwargs):
-        digest_config(self, kwargs, locals())        
+        digest_config(self, kwargs, locals())
         Animation.__init__(self, mobject, **kwargs)
 
     def update_mobject(self, alpha):
@@ -289,7 +289,7 @@ class ApplyToCenters(Animation):
     def update_mobject(self, alpha):
         self.centers_container.update_mobject(alpha)
         center_mobs = self.centers_container.mobject.split()
-        mobjects = self.mobject.split()        
+        mobjects = self.mobject.split()
         for center_mob, mobject in zip(center_mobs, mobjects):
             mobject.shift(
                 center_mob.get_center()-mobject.get_center()
@@ -317,7 +317,7 @@ class LaggedStart(Animation):
                 **kwargs
             )
             for submob, beta in zip(
-                mobject, 
+                mobject,
                 np.linspace(0, 1-self.lag_ratio, len(mobject))
             )
         ]
@@ -343,7 +343,7 @@ class DelayByOrder(Animation):
     }
     def __init__(self, animation, **kwargs):
         digest_locals(self)
-        self.num_mobject_points = animation.mobject.get_num_points()        
+        self.num_mobject_points = animation.mobject.get_num_points()
         kwargs.update(dict([
             (attr, getattr(animation, attr))
             for attr in Animation.CONFIG
@@ -385,7 +385,7 @@ class Succession(Animation):
             last_anim.clean_up()
             if last_anim.mobject is curr_anim.mobject:
                 #TODO, is there a way to do this that doesn't
-                #require leveraging implementation details of 
+                #require leveraging implementation details of
                 #Animations, and knowing about the different
                 #struction of Transform?
                 if hasattr(curr_anim, "target_mobject"):
@@ -408,24 +408,3 @@ class AnimationGroup(Animation):
     def update_mobject(self, alpha):
         for anim in self.sub_anims:
             anim.update(alpha)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

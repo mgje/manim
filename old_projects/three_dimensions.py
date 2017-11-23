@@ -2,7 +2,7 @@ import numpy as np
 import itertools as it
 
 from mobject import Mobject, Mobject1D, Mobject2D, Mobject
-from geometry import Line
+from topics.geometry import *
 from helpers import *
 
 class Stars(Mobject1D):
@@ -18,8 +18,8 @@ class Stars(Mobject1D):
         ]
         self.add_points([
             (
-                r * np.sin(phi)*np.cos(theta), 
-                r * np.sin(phi)*np.sin(theta), 
+                r * np.sin(phi)*np.cos(theta),
+                r * np.sin(phi)*np.sin(theta),
                 r * np.cos(phi)
             )
             for r, phi, theta in zip(radii, phis, thetas)
@@ -30,8 +30,8 @@ class CubeWithFaces(Mobject2D):
         self.add_points([
             sgn * np.array(coords)
             for x in np.arange(-1, 1, self.epsilon)
-            for y in np.arange(x, 1, self.epsilon) 
-            for coords in it.permutations([x, y, 1]) 
+            for y in np.arange(x, 1, self.epsilon)
+            for coords in it.permutations([x, y, 1])
             for sgn in [-1, 1]
         ])
         self.pose_at_angle()
@@ -103,11 +103,9 @@ class Sphere(Mobject2D):
                 np.cos(phi)
             )
             for phi in np.arange(self.epsilon, np.pi, self.epsilon)
-            for theta in np.arange(0, 2 * np.pi, 2 * self.epsilon / np.sin(phi)) 
+            for theta in np.arange(0, 2 * np.pi, 2 * self.epsilon / np.sin(phi))
         ])
         self.set_color(BLUE)
 
     def unit_normal(self, coords):
         return np.array(coords) / np.linalg.norm(coords)
-
-        

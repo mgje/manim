@@ -5,13 +5,14 @@ from helpers import *
 
 from mobject.tex_mobject import TexMobject, TextMobject, Brace
 from mobject import Mobject
-from mobject.image_mobject import \
-    ImageMobject, MobjectFromPixelArray
-from topics.three_dimensions import Stars
+from mobject.image_mobject import ImageMobject
+from mobject.point_cloud_mobject import Point, Mobject1D, Mobject2D, PMobject
+#MobjectFromPixelArray
+from old_projects.three_dimensions import Stars
 
 from animation import Animation
 from animation.transform import *
-from animation.simple_animations import * 
+from animation.simple_animations import *
 from animation.playground import TurnInsideOut, Vibrate
 from topics.geometry import *
 from topics.characters import Randolph, Mathematician
@@ -59,12 +60,12 @@ class LoopTheLoop(ParametricFunction):
 
 
 class SlideWordDownCycloid(Animation):
-    CONFIG = { 
+    CONFIG = {
         "rate_func" : None,
         "run_time"  : 8
     }
     def __init__(self, word, **kwargs):
-        self.path = Cycloid(end_theta = np.pi)        
+        self.path = Cycloid(end_theta = np.pi)
         word_mob = TextMobject(list(word))
         end_word = word_mob.copy()
         end_word.shift(-end_word.get_bottom())
@@ -91,8 +92,9 @@ class SlideWordDownCycloid(Animation):
             time = max(time, 0)
             time = min(time, 1)
             if time < cut_offs[0]:
-                brightness = time/cut_offs[0]
-                letter.rgbas = brightness*np.ones(letter.rgbas.shape)
+                br = time/cut_offs[0]
+                col = Color(rgb=(br, br, br))
+                letter.set_color(col)
                 position = self.path.points[0]
                 angle = 0
             elif time < cut_offs[1]:
@@ -238,7 +240,7 @@ class TryManyPaths(PathSlidingScene):
     def construct(self):
         randy = Randolph()
         randy.shift(-randy.get_bottom())
-        self.slider = randy.copy()  
+        self.slider = randy.copy()
         randy.scale(RANDY_SCALE_FACTOR)
         paths = self.get_paths()
         point_a = Dot(paths[0].points[0])
@@ -247,9 +249,11 @@ class TryManyPaths(PathSlidingScene):
         B = TexMobject("B").next_to(point_b, RIGHT)
         for point, tex in [(point_a, A), (point_b, B)]:
             self.play(ShowCreation(point))
-            self.play(ShimmerIn(tex))
+            #self.play(ShimmerIn(tex))
+            #self.play(FadeIn(tex))
+            self.play(ShowCreation(tex,run_time = 0.1))
             self.dither()
-        curr_path = None        
+        curr_path = None
         for path in paths:
             new_slider = self.adjust_mobject_to_index(
                 randy.copy(), 1, path.points
@@ -267,7 +271,8 @@ class TryManyPaths(PathSlidingScene):
         self.add(point_a, point_b, A, B, curr_path)
         text = self.get_text()
         text.to_edge(UP)
-        self.play(ShimmerIn(text))
+        #self.play(ShimmerIn(text)
+        self.play(FadeIn(text))
         for path in paths:
             self.play(Transform(
                 curr_path, path,
@@ -279,26 +284,26 @@ class TryManyPaths(PathSlidingScene):
         return TextMobject("Which path is fastest?")
 
     def get_paths(self):
-        sharp_corner = Mobject(
-            Line(3*UP+LEFT, LEFT),
-            Arc(angle = np.pi/2, start_angle = np.pi),
-            Line(DOWN, DOWN+3*RIGHT)
-        ).ingest_submobjects().highlight(GREEN)
+        # sharp_corner = Mobject(
+        #     Line(3*UP+LEFT, LEFT),
+        #     Arc(angle = np.pi/2, start_angle = np.pi),
+        #     Line(DOWN, DOWN+3*RIGHT)
+        # ).ingest_submobjects().highlight(GREEN)
         paths = [
             Arc(
-                angle = np.pi/2, 
-                radius = 3, 
+                angle = np.pi/2,
+                radius = 3,
                 start_angle = 4
             ),
-            LoopTheLoop(),            
+            LoopTheLoop(),
             Line(7*LEFT, 7*RIGHT, color = RED_D),
-            sharp_corner,
+            #sharp_corner,
             FunctionGraph(
                 lambda x : 0.05*(x**2)+0.1*np.sin(2*x)
             ),
             FunctionGraph(
-                lambda x : x**2, 
-                x_min = -3, 
+                lambda x : x**2,
+                x_min = -3,
                 x_max = 2,
                 density = 3*DEFAULT_POINT_DENSITY_1D
             )
@@ -319,7 +324,7 @@ class RollingRandolph(PathSlidingScene):
         randy = Randolph()
         randy.scale(RANDY_SCALE_FACTOR)
         randy.shift(-randy.get_bottom())
-        self.add_cycloid_end_points()        
+        self.add_cycloid_end_points()
         self.slide(randy, self.cycloid, roll = True)
 
 
@@ -343,7 +348,7 @@ class NotTheCircle(PathSlidingScene):
         self.play(
             ShowCreation(path),
             ApplyMethod(
-                radius.rotate, 
+                radius.rotate,
                 angle,
                 path_func = path_along_arc(angle)
             )
@@ -360,7 +365,8 @@ class NotTheCircle(PathSlidingScene):
         self.play(FadeIn(randy_copy))
         self.remove(randy_copy)
         self.slide(randy, path)
-        self.play(ShimmerIn(words))
+        #self.play(ShimmerIn(words))
+        self.play(FadeIn(words))
         self.dither()
 
 
@@ -386,7 +392,7 @@ class TransitionAwayFromSlide(PathSlidingScene):
             run_time = 2,
             rate_func = rush_into
         ))
-        
+
 
 class MinimalPotentialEnergy(Scene):
     def construct(self):
@@ -415,7 +421,7 @@ class MinimalPotentialEnergy(Scene):
         nature_finds.highlight(GREEN)
         nature_finds.shift(2*RIGHT+3*UP)
         arrow = Arrow(
-            nature_finds.get_bottom(), min_point, 
+            nature_finds.get_bottom(), min_point,
             color = GREEN
         )
 
@@ -440,20 +446,21 @@ class MinimalPotentialEnergy(Scene):
             words.highlight(RED)
 
         self.add(
-            axes, top_words[0], side_words_start, 
+            axes, top_words[0], side_words_start,
             last_side_words[0]
         )
         self.play(ShowCreation(graph))
         self.play(
-            ShimmerIn(nature_finds),
+            #ShimmerIn(nature_finds),
+            ShowCreation(nature_finds),
             ShowCreation(arrow),
             ShowCreation(min_point)
         )
         self.dither()
         self.play(
-            FadeOut(top_words[0]), 
+            FadeOut(top_words[0]),
             FadeOut(last_side_words[0]),
-            GrowFromCenter(top_words[1]), 
+            GrowFromCenter(top_words[1]),
             GrowFromCenter(last_side_words[1])
         )
         self.dither(3)
@@ -498,7 +505,8 @@ class WhatGovernsSpeed(PathSlidingScene):
             sliders.append(slider)
             vectors.append(vector)
         self.dither()
-        self.play(ShimmerIn(words))
+        #self.play(ShimmerIn(words))
+        self.play(ShowCreation(words))
         self.dither(3)
         slider = sliders.pop(1)
         vector = vectors.pop(1)
@@ -533,11 +541,13 @@ class WhatGovernsSpeed(PathSlidingScene):
         self.play(ShowCreation(horiz_line))
         self.play(
             GrowFromCenter(vert_brace),
-            ShimmerIn(y_mob)
+            FadeIn(y_mob)
+            #ShimmerIn(y_mob)
         )
         self.play(
             GrowFromCenter(vect_brace),
-            ShimmerIn(sqrt_y)
+            FadeIn(sqrt_y)
+            #ShimmerIn(sqrt_y)
         )
         self.dither(3)
         self.solve_energy()
@@ -582,13 +592,13 @@ class WhatGovernsSpeed(PathSlidingScene):
         self.play(ApplyMethod(ms.shift, 5*UP))
         self.dither()
         self.play(Transform(
-            half, two, 
+            half, two,
             path_func = counterclockwise_path()
         ))
         self.dither()
         self.play(
             Transform(
-                squared, sqrt, 
+                squared, sqrt,
                 path_func = clockwise_path()
             ),
             Transform(equals, new_eq)
@@ -621,7 +631,8 @@ class ThetaTInsteadOfXY(Scene):
 
         self.play(ShowCreation(cycloid))
         self.play(ShowCreation(dot))
-        self.play(ShimmerIn(xy))
+        #self.play(ShimmerIn(xy))
+        self.play(FadeIn(xy))
         self.dither()
         self.play(
             FadeOut(xy),
@@ -630,7 +641,8 @@ class ThetaTInsteadOfXY(Scene):
         self.play(
             ShowCreation(arc),
             ShowCreation(vert_line),
-            ShimmerIn(theta)
+            FadeIn(theta)
+            #ShimmerIn(theta)
         )
         self.dither()
 
@@ -649,13 +661,14 @@ class DefineCurveWithKnob(PathSlidingScene):
         self.path = self.get_path()
         self.path.shift(1.5*DOWN)
         self.path.show()
-        self.path.highlight(BLACK)        
+        self.path.highlight(BLACK)
 
         randy = Randolph()
         randy.scale(RANDY_SCALE_FACTOR)
         randy.shift(-randy.get_bottom())
 
-        self.play(ShimmerIn(words))
+        #self.play(ShimmerIn(words))
+        self.play(FadeIn(words))
         self.play(ShowCreation(arrow))
         self.play(ShowCreation(self.knob))
         self.dither()
@@ -680,7 +693,7 @@ class WonkyDefineCurveWithKnob(DefineCurveWithKnob):
     def get_path(self):
         return ParametricFunction(
             lambda t : t*RIGHT + (-0.2*t-np.sin(2*np.pi*t/6))*UP,
-            start = -7, 
+            start = -7,
             end = 10
         )
 
@@ -689,7 +702,7 @@ class SlowDefineCurveWithKnob(DefineCurveWithKnob):
     def get_path(self):
         return ParametricFunction(
             lambda t : t*RIGHT + (np.exp(-(t+2)**2)-0.2*np.exp(t-2)),
-            start = -4, 
+            start = -4,
             end = 4
         )
 
@@ -704,16 +717,3 @@ class BumpyDefineCurveWithKnob(DefineCurveWithKnob):
         result.scale(0.7)
         result.shift(DOWN)
         return result
-
-
-
-
-
-
-
-
-
-
-
-
-
