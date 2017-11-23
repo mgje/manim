@@ -1728,10 +1728,10 @@ class IntroducePolynomialSpace(Scene):
             [
                 str(j) if j == i+1 else "0"
                 for j in range(4)
-            ] + ["\\cdots"]
+            ] + ["$\\cdots$"]
             for i in range(4)
         ] + [
-            ["\\vdots"]*4 + ["\\ddots"]
+            ["$\\vdots$"]*4 + ["$\\ddots$"]
         ])
         matrix.shift(2*LEFT)
         diag_entries = VGroup(*[
@@ -1793,7 +1793,7 @@ class IntroducePolynomialSpace(Scene):
         poly.next_to(deriv)
         self.play(FadeIn(poly))
 
-        array = Matrix(list(coefs.copy()) + [TexMobject("\\vdots")])
+        array = Matrix([list(coefs.copy()) + [TexMobject("\\vdots")]])
         array.next_to(matrix, RIGHT)
         self.play(Write(array.get_brackets()))
         to_remove = []
@@ -1838,10 +1838,10 @@ class IntroducePolynomialSpace(Scene):
             group.arrange_submobjects()
             result_entries.append(group)
         result_array = Matrix(
-            result_entries + [
+            [result_entries + [
                 TexMobject("0"),
                 TexMobject("\\vdots")
-            ]
+            ]]
         )
         result_array.next_to(eq2)
 
@@ -2091,11 +2091,16 @@ class ShowVectorSpaces(Scene):
     def get_arrays(self):
         arrays = VGroup(*[
             VGroup(*[
-                Matrix(np.random.randint(-9, 9, 2))
+                #Matrix([[ np.random.randint(-9, 9, 2) for x in range(1)]])
+                Matrix([[str(np.random.randint(-9, 9, 2)) for i in range(1) ]])
                 for x in range(4)
             ])
             for x in range(3)
         ])
+
+
+
+
         for subgroup in arrays:
             subgroup.arrange_submobjects(DOWN, buff = MED_SMALL_BUFF)
         arrays.arrange_submobjects(RIGHT)
@@ -2149,7 +2154,7 @@ class MathematicianSpeakingToAll(Scene):
         others.scale(0.8)
         others.to_corner(DOWN+RIGHT)
 
-        bubble = mathy.get_bubble(SpeechBubble)
+        bubble = mathy.get_bubble()
         bubble.write("""
             I don't want to think
             about all y'all's crazy
@@ -2165,7 +2170,7 @@ class MathematicianSpeakingToAll(Scene):
         )
         self.play(Blink(others[3]))
         self.dither()
-        thought_bubble = mathy.get_bubble(ThoughtBubble)
+        thought_bubble = mathy.get_bubble()
         self.play(
             FadeOut(bubble.content),
             Transform(bubble, thought_bubble),
@@ -2411,10 +2416,10 @@ class VectorSpaceOfPiCreatures(Scene):
 class MathematicianDoesntHaveToThinkAboutThat(Scene):
     def construct(self):
         mathy = Mathematician().to_corner(DOWN+LEFT)
-        bubble = mathy.get_bubble(ThoughtBubble, height = 4)
-        words = TextMobject("I don't have to worry", "\\\\ about that madness!")
+        bubble = mathy.get_bubble( height = 4)
+        words = TextMobject("I don't have to worry \\\\", "about that madness!")
         bubble.add_content(words)
-        new_words = TextMobject("So long as I", "\\\\ work abstractly")
+        new_words = TextMobject("So long as I \\\\", "work abstractly")
         bubble.add_content(new_words)
 
         self.play(
