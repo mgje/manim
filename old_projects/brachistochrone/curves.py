@@ -495,12 +495,13 @@ class WhatGovernsSpeed(PathSlidingScene):
         self.add(self.cycloid)
         sliders, vectors = [], []
         for points in broken_points:
-            path = Mobject().add_points(points)
+            path = PMobject().add_points(points)
             vect = points[-1] - points[-2]
             magnitude = np.sqrt(ceiling - points[-1, 1])
             vect = magnitude*vect/np.linalg.norm(vect)
             slider = self.slide(randy, path, ceiling = ceiling)
-            vector = Vector(slider.get_center(), vect)
+            vector = Vector( vect)
+            #vector = Vector(slider.get_center(), vect)
             self.add(slider, vector)
             sliders.append(slider)
             vectors.append(vector)
@@ -576,13 +577,13 @@ class WhatGovernsSpeed(PathSlidingScene):
         equals = kinetic.split()[-1]
         new_eq = equals.copy().next_to(kinetic.split()[2])
 
-        self.play(
-            Transform(
-                Point(loss_in_potential.get_left()),
-                loss_in_potential
-            ),
-            *map(GrowFromCenter, potential.split())
-        )
+        # self.play(
+        #     Transform(
+        #         Point(loss_in_potential.get_left()),
+        #         loss_in_potential
+        #     ),
+        #     *map(GrowFromCenter, potential.split())
+        # )
         self.dither(2)
         self.play(
             FadeOut(loss_in_potential),
@@ -616,7 +617,9 @@ class ThetaTInsteadOfXY(Scene):
         vect = cycloid.points[index+1]-point
         vect /= np.linalg.norm(vect)
         vect *= 3
-        vect_mob = Vector(point, vect)
+        #vect_mob = Vector(point, vect)
+        vect_mob = Vector( vect)
+        vect_mob.shift(point)
         dot = Dot(point)
         xy = TexMobject("\\big( x(t), y(t) \\big)")
         xy.next_to(dot, UP+RIGHT, buff = 0.1)
@@ -650,11 +653,12 @@ class ThetaTInsteadOfXY(Scene):
 class DefineCurveWithKnob(PathSlidingScene):
     def construct(self):
         self.knob = Circle(color = BLUE_D)
-        self.knob.add_line(UP, DOWN)
+        #self.knob.add_line(UP, DOWN)
         self.knob.to_corner(UP+RIGHT)
         self.knob.shift(0.5*DOWN)
         self.last_angle = np.pi/2
-        arrow = Vector(ORIGIN, RIGHT)
+        #arrow = Vector(ORIGIN, RIGHT)
+        arrow = Vector( RIGHT)
         arrow.next_to(self.knob, LEFT)
         words = TextMobject("Turn this knob over time to define the curve")
         words.next_to(arrow, LEFT)

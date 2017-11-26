@@ -4,7 +4,7 @@ import operator as op
 import sys
 import inspect
 from PIL import Image
-import cv2
+
 import random
 from scipy.spatial.distance import cdist
 from scipy import ndimage
@@ -13,18 +13,13 @@ from helpers import *
 
 from mobject.tex_mobject import TexMobject
 from mobject import Mobject
-from mobject.image_mobject import \
-    ImageMobject, MobjectFromPixelArray
-from mobject.tex_mobject import TextMobject, TexMobject    
+from mobject.image_mobject import ImageMobject
+from mobject.tex_mobject import TextMobject, TexMobject
 
-from animation.transform import \
-    Transform, CounterclockwiseTransform, ApplyPointwiseFunction,\
-    FadeIn, FadeOut, GrowFromCenter, ShimmerIn, ApplyMethod
-from animation.simple_animations import \
-    ShowCreation, Homotopy, PhaseFlow, ApplyToCenters, DelayByOrder
+from animation.transform import *
+from animation.simple_animations import *
 from animation.playground import TurnInsideOut, Vibrate
-from topics.geometry import \
-    Line, Circle, Square, Grid, Rectangle, Arrow, Dot, Point
+from topics.geometry import *
 from topics.characters import Randolph, Mathematician, ThoughtBubble
 from topics.functions import ParametricFunction
 from topics.number_line import NumberPlane
@@ -33,8 +28,8 @@ from scene import Scene
 
 
 DEFAULT_GAUSS_BLUR_CONFIG = {
-    "ksize"  : (5, 5), 
-    "sigmaX" : 6, 
+    "ksize"  : (5, 5),
+    "sigmaX" : 6,
     "sigmaY" : 6,
 }
 
@@ -65,7 +60,7 @@ def sort_by_color(mob):
         1,
         mob.rgbas
     ))
-    mob.rgbas = mob.rgbas[indices]    
+    mob.rgbas = mob.rgbas[indices]
     mob.points = mob.points[indices]
 
 
@@ -85,11 +80,11 @@ def get_image_array(name):
 
 def get_edges(image_array):
     blurred = cv2.GaussianBlur(
-        image_array, 
+        image_array,
         **DEFAULT_GAUSS_BLUR_CONFIG
     )
     edges = cv2.Canny(
-        blurred, 
+        blurred,
         **DEFAULT_CANNY_CONFIG
     )
     return edges
@@ -112,8 +107,8 @@ def nearest_neighbor_align(mobject1, mobject2):
         )
     return new_mob1, new_mob2
 
-def get_connected_components(image_array, 
-                             blur_radius = DEFAULT_BLUR_RADIUS, 
+def get_connected_components(image_array,
+                             blur_radius = DEFAULT_BLUR_RADIUS,
                              threshold = DEFAULT_CONNECTED_COMPONENT_THRESHOLD):
     blurred_image = ndimage.gaussian_filter(image_array, blur_radius)
     labels, component_count = ndimage.label(blurred_image > threshold)
@@ -141,7 +136,7 @@ class TracePicture(Scene):
     @staticmethod
     def args_to_string(name):
         return name
-        
+
     @staticmethod
     def string_to_args(name):
         return name
@@ -221,29 +216,29 @@ class JohannThinksHeIsBetter(Scene):
             name_mob.scale(0.5)
             name_mob.next_to(guy, DOWN)
             guy.name_mob = name_mob
-            guy.sort_points(lambda p : np.dot(p, DOWN+RIGHT))
+            #guy.sort_points(lambda p : np.dot(p, DOWN+RIGHT))
         bubble = ThoughtBubble(initial_width = 12)
         bubble.stretch_to_fit_height(6)
-        bubble.ingest_submobjects()
+        #bubble.ingest_submobjects()
         bubble.pin_to(pensive_johann)
         bubble.shift(DOWN)
         point = Point(johann.get_corner(UP+RIGHT))
         upper_point = Point(comparitive_johann.get_corner(UP+RIGHT))
         lightbulb = ImageMobject("Lightbulb", invert = False)
         lightbulb.scale(0.1)
-        lightbulb.sort_points(np.linalg.norm)
+        #lightbulb.sort_points(np.linalg.norm)
         lightbulb.next_to(upper_point, RIGHT)
 
         self.add(johann)
         self.dither()
         self.play(
             Transform(johann, pensive_johann),
-            Transform(point, bubble),
+            #Transform(point, bubble),
             run_time = 2
         )
         self.remove(point)
         self.add(bubble)
-        weakling = guys[1]        
+        weakling = guys[1]
         self.play(
             FadeIn(comparitive_johann),
             ShowCreation(greater_than),
@@ -251,12 +246,12 @@ class JohannThinksHeIsBetter(Scene):
         )
         self.dither(2)
         for guy in guys[2:]:
-            self.play(DelayByOrder(Transform(
-                weakling, upper_point
-            )))
+            # self.play(DelayByOrder(Transform(
+            #     weakling, upper_point
+            # )))
             self.play(
                 FadeIn(guy),
-                ShimmerIn(guy.name_mob)
+                ShowCreation(guy.name_mob)
             )
             self.dither(3)
             self.remove(guy.name_mob)
@@ -284,7 +279,7 @@ class NewtonVsJohann(Scene):
         for i in range(2):
             kwargs = {
                 "path_func" : counterclockwise_path(),
-                "run_time"  : 2 
+                "run_time"  : 2
             }
             self.play(
                 ApplyMethod(newton.replace, johann, **kwargs),
@@ -346,10 +341,10 @@ class MathematiciansOfEurope(Scene):
 
 class OldNewtonIsDispleased(Scene):
     def construct(self):
-        old_newton = ImageMobject("Old_Newton", invert = False)
+        old_newton = ImageMobject("Newton", invert = False)
         old_newton.scale(0.8)
         self.add(old_newton)
-        self.freeze_background()
+        #self.freeze_background()
 
         words = TextMobject("Note the displeasure")
         words.to_corner(UP+RIGHT)
@@ -357,7 +352,7 @@ class OldNewtonIsDispleased(Scene):
         arrow = Arrow(words.get_bottom(), face_point)
 
 
-        self.play(ShimmerIn(words))
+        self.play(ShowCreation(words))
         self.play(ShowCreation(arrow))
         self.dither()
 
@@ -367,12 +362,12 @@ class NewtonConsideredEveryoneBeneathHim(Scene):
         mathematicians = [
             ImageMobject(name, invert = False)
             for name in [
-                "Old_Newton",
+                "Newton",
                 "Johann_Bernoulli2",
                 "Jacob_Bernoulli",
-                "Ehrenfried_von_Tschirnhaus",
+                #"Ehrenfried_von_Tschirnhaus",
                 "Gottfried_Wilhelm_von_Leibniz",
-                "Guillaume_de_L'Hopital",
+                #"Guillaume_de_L'Hopital",
             ]
         ]
         newton = mathematicians.pop(0)
@@ -400,30 +395,3 @@ class NewtonConsideredEveryoneBeneathHim(Scene):
         self.dither()
         self.play(FadeIn(Mobject(*mathematicians)))
         self.dither()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
